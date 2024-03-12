@@ -1,5 +1,11 @@
 SRCS =	minishell.c\
-		utils/set.c
+		lexer/lexer.c\
+		lexer/tokenize.c\
+		lexer/t_token_utils.c\
+		utils/set.c\
+		utils/ft_calloc.c\
+		utils/ft_str.c\
+		utils/is.c\
 
 CC = @gcc
 NAME = minishell
