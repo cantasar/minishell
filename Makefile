@@ -1,5 +1,5 @@
 SRCS =	minishell.c\
-		utils/set_env.c
+		utils/set.c
 
 CC = @gcc
 NAME = minishell
@@ -18,7 +18,6 @@ $(READLINE):
 	cd readline-8.2 && ./configure --prefix=${PWD}/readline
 	cd readline-8.2 && make install
 
-
 $(NAME): $(OBJS)
 	$(CC) -o $(NAME) $(OBJS) $(CFLAGS) -L${PWD}/readline/lib  -I${PWD}/readline/include/ -lreadline
 
@@ -28,6 +27,7 @@ $(NAME): $(OBJS)
 fclean: clean
 	$(RM) $(NAME)
 	@rm -rf readline-8.2 readline-8.2.tar.gz
+##	$(RM) ./readline
 
 clean:
 	$(RM) $(OBJS)
