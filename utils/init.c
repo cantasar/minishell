@@ -1,5 +1,6 @@
 #include "../minishell.h"
 
+//yeni bir char** array oluşturup env yi içine kopyalıyor
 char	**set_env(char **env)
 {
 	char	**new_arr;
@@ -30,8 +31,10 @@ void	set_path(void)
 	int		i;
 	char	*tmp;
 
+	//PATH leri : dan bölüp char ** diziye kopyalıyor
 	g_ms.path = ft_split(getenv("PATH"), ':');
 	i = 0;
+	//Eğer PATH in sonu / ile bitmiyorsa / ekliyor
 	while (g_ms.path[i])
 	{
 		if (ft_strncmp(&g_ms.path[i][ft_strlen(g_ms.path[i]) - 1],

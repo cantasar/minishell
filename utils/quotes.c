@@ -16,22 +16,23 @@ int find_matching_quote(char *line, int i, int *num_del, int del)
 int check_quotes(char *line)
 {
 	int i;
-	int s;
-	int d;
+	int s_q;
+	int d_q;
 
-	s = 0;
-	d = 0;
+	s_q = 0;
+	d_q = 0;
 	i = -1;
 	while (line[++i])
 	{
 		if (line[i] == 34)
-			i += find_matching_quote(line, i, &d, D_Q);
+			i += find_matching_quote(line, i, &d_q, D_Q);
 		if (line[i] == 39)
-			i += find_matching_quote(line, i, &s, S_Q);
+			i += find_matching_quote(line, i, &s_q, S_Q);
 		if ((int)ft_strlen(line) == i)
 			break ;
 	}
-	if ((d > 0 && d % 2 != 0) || (s > 0 && s % 2 != 0))
+	//Toplam Quote sayısının çift olması gerekli kapanmış olması için
+	if ((d_q > 0 && d_q % 2 != 0) || (s_q > 0 && s_q % 2 != 0))
 		return (0);
 	return (1);
 }
