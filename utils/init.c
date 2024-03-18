@@ -1,7 +1,7 @@
 #include "../minishell.h"
 
 //yeni bir char** array oluşturup env yi içine kopyalıyor
-char	**set_env(char **env)
+char	**ft_set_env(char **env)
 {
 	char	**new_arr;
 	size_t	i;
@@ -26,7 +26,7 @@ char	**set_env(char **env)
 	return (new_arr);
 }
 
-void	set_path(void)
+void	ft_set_path(void)
 {
 	int		i;
 	char	*tmp;
@@ -48,10 +48,18 @@ void	set_path(void)
 	}
 }
 
-void	init_ms(char **env_p)
+void	ft_init_ms(char **env_p)
 {
-	g_ms.env = set_env(env_p);
-	set_path();
+	g_ms.env = ft_set_env(env_p);
+	ft_set_path();
 	g_ms.pwd = ft_strdup(getenv("PWD"));
 	g_ms.oldpwd = ft_strdup(getenv("OLDPWD"));
+	g_ms.lexer_list = NULL;
+
+	printf(("\n"));
+	int i = 0;
+	while (g_ms.env[i])
+		printf("%s\n", g_ms.env[i++]);
+	printf(("\n"));
+	
 }

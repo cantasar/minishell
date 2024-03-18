@@ -1,6 +1,8 @@
 SRCS =	main.c\
 		utils/init.c\
 		utils/quotes.c\
+		utils/ft_iswhitespace.c\
+		lexer/lexer.c\
 
 CC = @gcc
 NAME = minishell
