@@ -1,7 +1,7 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-// #include "./libft/libft.h"
+#include "./libft/libft.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <readline/readline.h>
@@ -48,7 +48,11 @@ void		ft_init_ms(char **env_p);
 int 		ft_check_quotes(char *line);
 
 int			ft_iswhitespace(char c);
-t_tokens	ft_istoken(char c);
+int	ft_istoken(char c);
+
+//Lexer
+int	lexer();
+void	ft_add_list(char *str, t_tokens token, t_lexer **list);
 
 
 #endif

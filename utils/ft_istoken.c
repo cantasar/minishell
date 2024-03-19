@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-t_tokens	ft_istoken(char c)
+int	ft_istoken(char c)
 {
 	if (c == '|')
 		return (PIPE);

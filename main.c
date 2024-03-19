@@ -16,6 +16,11 @@ void	ft_minishell()
 	add_history(g_ms.line);
 	if (!ft_check_quotes(g_ms.line))
 		return ;
+	if (lexer())
+	{
+		printf("lexer çalıştı\n");
+	}
+	
 
 }
 

@@ -56,10 +56,10 @@ void	ft_init_ms(char **env_p)
 	g_ms.oldpwd = ft_strdup(getenv("OLDPWD"));
 	g_ms.lexer_list = NULL;
 
-	printf(("\n"));
-	int i = 0;
-	while (g_ms.env[i])
-		printf("%s\n", g_ms.env[i++]);
-	printf(("\n"));
+	// printf(("\n"));
+	// int i = 0;
+	// while (g_ms.env[i])
+	// 	printf("%s\n", g_ms.env[i++]);
+	// printf(("\n"));
 	
 }

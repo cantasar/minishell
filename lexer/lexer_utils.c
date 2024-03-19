@@ -18,47 +18,27 @@ t_lexer	*ft_new_list(char *str, t_tokens token)
 	return (new);
 }
 
-void	ft_list_addback(t_lexer *lst, t_lexer *new)
+void    ft_list_addback(t_lexer **lst, t_lexer *new)
 {
-	t_lexer	*tmp;
-
-	tmp = lst;
-	if (lst == NULL)
-	{
-		printf("ilk");
-		lst = new;
-		return ;
-	}
-	while (tmp->next != NULL)
-		tmp = tmp->next;
-	tmp->next = new;
-	new->prev = tmp;
+    if (*lst == NULL) {
+        *lst = new;
+        return;
+    }
+    t_lexer *tmp = *lst;
+    while (tmp->next != NULL)
+        tmp = tmp->next;
+    tmp->next = new;
+    new->prev = tmp;
 }
 
-void	ft_add_list(char *str, t_tokens token, t_lexer *list)
+
+void	ft_add_list(char *str, t_tokens token, t_lexer **list)
 {
+	printf("**ppp**\n");
 	t_lexer *res;
 
 	res = ft_new_list(str, token);
 	if(!res)
 		printf("hata");
 	ft_list_addback(list, res);
-
-}
-
-int main(int argc, char const *argv[])
-{
-	t_lexer *list = (t_lexer *)malloc(sizeof(t_lexer) * 3);
-
-	ft_add_list("abc", PIPE, list);
-	ft_add_list("abcdef", PIPE, list);
-
-	while (list->next != NULL)
-	{
-		printf("%s\n", list->str);
-		list = list->next;
-	}
-	
-
-	return 0;
 }
