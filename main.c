@@ -17,9 +17,7 @@ void	ft_minishell()
 	if (!ft_check_quotes(g_ms.line))
 		return ;
 	if (lexer())
-	{
-		printf("lexer çalıştı\n");
-	}
+		return ;
 	
 
 }
@@ -37,5 +35,3 @@ int main(int argc, char *argv[], char **env_p)
 
 	return (0);
 }
-
-//https://www.notion.so/minishell-f32cac3191af4f458fb5a13d41f04131?pvs=4

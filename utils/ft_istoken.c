@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-int	ft_istoken(char c)
+int	ft_istoken(int c)
 {
 	if (c == '|')
 		return (PIPE);
@@ -9,5 +9,5 @@ int	ft_istoken(char c)
 	else if (c == '>')
 		return (GREAT);
 	else
-		return (0);
+		return (1);
 }

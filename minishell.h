@@ -13,20 +13,20 @@
 # define D_Q '"'
 # define S_Q '\''
 
-typedef enum s_tokens
+typedef enum e_ttype
 {
-	PIPE = 1,
-	GREAT,
-	GREAT_GREAT,
+	STRING = 1,
+	PIPE,
 	LESS,
 	LESS_LESS,
-}	t_tokens;
+	GREAT,
+	GREAT_GREAT
+} t_tokens;
 
 typedef struct s_lexer
 {
 	char			*str;
 	t_tokens		token;
-	int				i;
 	struct s_lexer	*next;
 	struct s_lexer	*prev;
 }	t_lexer;
@@ -48,11 +48,15 @@ void		ft_init_ms(char **env_p);
 int 		ft_check_quotes(char *line);
 
 int			ft_iswhitespace(char c);
-int	ft_istoken(char c);
+int			ft_istoken(int c);
 
 //Lexer
 int	lexer();
-void	ft_add_list(char *str, t_tokens token, t_lexer **list);
 
+void ft_tokenize(t_lexer **list);
+
+int	ft_token(char *str, t_tokens token, t_lexer **list);
+t_lexer	*ft_new_token(char *str, t_tokens token);
+void	ft_token_addback(t_lexer **list, t_lexer *last);
 
 #endif
