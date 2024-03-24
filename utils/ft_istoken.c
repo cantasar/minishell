@@ -3,11 +3,11 @@
 int	ft_istoken(int c)
 {
 	if (c == '|')
-		return (PIPE);
+		return (2);
 	else if (c == '<')
-		return (LESS);
+		return (3);
 	else if (c == '>')
-		return (GREAT);
+		return (5);
 	else
 		return (1);
 }
