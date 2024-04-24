@@ -38,6 +38,7 @@ typedef struct s_data
 	char	**path;
 	char	*pwd;
 	char	*oldpwd;
+	int		count_pipes;
 	t_lexer	*lexer_list;
 }	t_data;
 
@@ -58,5 +59,12 @@ void ft_tokenize(t_lexer **list);
 int	ft_token(char *str, t_tokens token, t_lexer **list);
 t_lexer	*ft_new_token(char *str, t_tokens token);
 void	ft_token_addback(t_lexer **list, t_lexer *last);
+
+
+//parser
+
+int	parser();
+void count_pipes();
+
 
 #endif

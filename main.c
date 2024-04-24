@@ -16,10 +16,8 @@ void	ft_minishell()
 	add_history(g_ms.line);
 	if (!ft_check_quotes(g_ms.line))
 		return ;
-	if (lexer())
-		return ;
-	
-
+	lexer();
+	parser();
 }
 
 int main(int argc, char *argv[], char **env_p)

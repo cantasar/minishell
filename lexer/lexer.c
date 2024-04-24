@@ -6,15 +6,17 @@ int	lexer()
 
 
 	//lexerlist print
-	while (g_ms.lexer_list && g_ms.lexer_list->next)
+	t_lexer	*tmp;
+
+	tmp = g_ms.lexer_list;
+	while (tmp)
 	{
-		printf("token type: %d\n", g_ms.lexer_list->token);
-		printf("token str: %s\n", g_ms.lexer_list->str);
+		printf("token type: %d\n", tmp->token);
+		printf("token str: %s\n", tmp->str);
 		printf("------\n");
-		g_ms.lexer_list = g_ms.lexer_list->next;
+		tmp = tmp->next;
 	}
-		printf("token type: %d\n", g_ms.lexer_list->token);
-		printf("token str: %s\n", g_ms.lexer_list->str);
+		printf("\n");
 
 	return(1);
 }

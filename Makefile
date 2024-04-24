@@ -6,6 +6,8 @@ SRCS =	main.c\
 		lexer/lexer.c\
 		lexer/tokenize.c\
 		lexer/lexer_utils.c\
+		parser/parser.c\
+		parser/parser_utils.c\
 
 CC = @gcc
 NAME = minishell
