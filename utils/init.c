@@ -55,6 +55,7 @@ void	ft_init_ms(t_data *ms, char **env)
 	ms->pwd = ft_strdup(getenv("PWD"));
 	ms->oldpwd = ft_strdup(getenv("OLDPWD"));
 	ms->lexer_list = NULL;
+	ms->process = NULL;
 	ms->process_count = 0;
 
 	// //print env

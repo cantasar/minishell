@@ -60,11 +60,12 @@ typedef struct s_data
 }	t_data;
 
 //utils
-void	ft_init_ms(t_data *ms, char **env);
+void		ft_init_ms(t_data *ms, char **env);
 int 		ft_check_quotes(char *line);
 
 int			ft_iswhitespace(char c);
 int			ft_istoken(int c);
+char		**ft_add_arr(char **arr, char *new);
 
 //Lexer
 int	ft_lexer(t_data *ms);
@@ -80,14 +81,19 @@ int	ft_check_pipes(t_data *ms);
 int	ft_check_operator(char *str);
 
 //parser
-
 int	ft_parser(t_data *ms);
 
 t_process	*ft_init_process(void);
 void	ft_process_addback(t_process **process, t_process *new_process);
 
+char	*ft_clean_quote(char *str);
+
 //error
 void	ft_token_err(int type);
+
+//free
+void	ft_free_lexer(t_data *ms);
+void	ft_free_process(t_data *ms);
 
 
 #endif

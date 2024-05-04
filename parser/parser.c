@@ -1,5 +1,49 @@
 #include "../minishell.h"
 
+int	ft_fill_process(t_data *ms, t_lexer **lexer_list, t_process *process)
+{
+	char		*data;
+	(void)process;
+	(void)ms;
+
+	if ((*lexer_list)->token == STRING)
+	{
+		data = ft_clean_quote((*lexer_list)->str);
+		printf("q removed->%s\n", data);
+		process->execute = ft_add_arr(process->execute, data);
+
+		
+
+
+
+
+	}
+		int i = 0;
+		while (process->execute[i])
+		{
+			printf("process->execute[%d]-> %s\n", i, process->execute[i]);
+			i++;
+		}
+	// else
+	// {
+	// 	data = ft_clean_quote((*lexer_list)->str);
+	// 	process->redirects = push_array(process->redirects, data);
+	// 	*lexer_list = (*lexer_list)->next;
+	// 	if (!(*lexer_list) || (*lexer_list)->token != STRING) // tokendan sonra string gelmeme durumu -> abc <<< asd
+	// 	{
+	// 		if (!(*lexer_list))
+	// 			ft_token_err(1);
+	// 		else
+	// 			ft_token_err((*lexer_list)->token);
+	// 		ft_free_lexer(ms);
+	// 		return (FALSE);
+	// 	}
+	// 	data = ft_clean_quote((*lexer_list)->str);
+	// 	process->redirects = push_array(process->redirects, data);
+	// }
+	return (TRUE);
+}
+
 int	ft_new_process(t_data *ms, t_lexer *list, t_process *process)
 {
 	while (list)
@@ -17,8 +61,8 @@ int	ft_new_process(t_data *ms, t_lexer *list, t_process *process)
 			ft_token_err(PIPE);
 			break ;
 		}
-		// if (!append_arguments(&list, process))
-		// 	return (FALSE);
+		if (!ft_fill_process(ms, &list, process))
+			return (FALSE);
 		list = list->next;
 	}
 	return (TRUE);
@@ -37,7 +81,22 @@ int	ft_parser(t_data *ms)
 	err = ft_new_process(ms, token, process);
 	if (err == FALSE)
 		return (FALSE);
-	printf("-->%d\n", ms->process_count);
-	// free_token();
+	printf("process sayısı --> %d\n", ms->process_count);
 	return (TRUE);
 }
+
+
+
+
+
+
+	// t_process	*tmp;
+	// tmp = ms->process;
+	// while (tmp)
+	// {
+	// 	printf("exec str0: %s\n", tmp->execute[0]);
+	// 	printf("exec str1: %s\n", tmp->execute[1]);
+	// 	printf("------\n");
+	// 	tmp = tmp->next;
+	// }
+	// printf("\n");
