@@ -1,22 +1,30 @@
 #include "../minishell.h"
 
-int	lexer()
+int	ft_lexer(t_data *ms)
 {
-	ft_tokenize(&g_ms.lexer_list);
-
-
+	if (ft_empty_line(ms) || ft_strlen(ms->line) == 0)
+		return (FALSE);
+	else if (ft_check_pipes(ms) == TRUE)
+		return (FALSE);
+	else if(ft_check_quotes(ms->line) == TRUE)
+		return (FALSE);
+	else if(ft_check_operator(ms->line) == TRUE)
+		return (FALSE);
+	ft_tokenize(ms, &ms->lexer_list);
+	
 	//lexerlist print
-	t_lexer	*tmp;
+	// t_lexer	*tmp;
 
-	tmp = g_ms.lexer_list;
-	while (tmp)
-	{
-		printf("token type: %d\n", tmp->token);
-		printf("token str: %s\n", tmp->str);
-		printf("------\n");
-		tmp = tmp->next;
-	}
-		printf("\n");
+	// tmp = ms->lexer_list;
+	// while (tmp)
+	// {
+	// 	printf("token type: %d\n", tmp->token);
+	// 	printf("token str: %s\n", tmp->str);
+	// 	printf("------\n");
+	// 	tmp = tmp->next;
+	// }
+	// printf("\n");
 
-	return(1);
+
+	return(TRUE);
 }

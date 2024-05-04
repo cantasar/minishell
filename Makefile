@@ -1,13 +1,14 @@
 SRCS =	main.c\
 		utils/init.c\
-		utils/quotes.c\
 		utils/ft_iswhitespace.c\
 		utils/ft_istoken.c\
 		lexer/lexer.c\
 		lexer/tokenize.c\
 		lexer/lexer_utils.c\
+		lexer/syntax_check.c\
 		parser/parser.c\
-		parser/parser_utils.c\
+		parser/process.c\
+		error/error.c\
 
 CC = @gcc
 NAME = minishell
@@ -39,7 +40,7 @@ fclean: clean
 	$(RM) $(NAME)
 	@rm -rf readline-8.2 readline-8.2.tar.gz
 	make fclean -C $(LIBFT)
-##	$(RM) ./readline
+	$(RM) ./readline
 
 clean:
 	$(RM) $(OBJS)

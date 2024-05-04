@@ -26,40 +26,49 @@ char	**ft_set_env(char **env)
 	return (new_arr);
 }
 
-void	ft_set_path(void)
+void	ft_set_path(t_data *ms)
 {
 	int		i;
 	char	*tmp;
 
 	//PATH leri : dan bölüp char ** diziye kopyalıyor
-	g_ms.path = ft_split(getenv("PATH"), ':');
+	ms->path = ft_split(getenv("PATH"), ':');
 	i = 0;
 	//Eğer PATH in sonu / ile bitmiyorsa / ekliyor
-	while (g_ms.path[i])
+	while (ms->path[i])
 	{
-		if (ft_strncmp(&g_ms.path[i][ft_strlen(g_ms.path[i]) - 1],
+		if (ft_strncmp(&ms->path[i][ft_strlen(ms->path[i]) - 1],
 			"/", 1) != 0)
 		{
-			tmp = ft_strjoin(g_ms.path[i], "/");
-			free(g_ms.path[i]);
-			g_ms.path[i] = tmp;
+			tmp = ft_strjoin(ms->path[i], "/");
+			free(ms->path[i]);
+			ms->path[i] = tmp;
 		}
 		i++;
 	}
 }
 
-void	ft_init_ms(char **env_p)
+void	ft_init_ms(t_data *ms, char **env)
 {
-	g_ms.env = ft_set_env(env_p);
-	ft_set_path();
-	g_ms.pwd = ft_strdup(getenv("PWD"));
-	g_ms.oldpwd = ft_strdup(getenv("OLDPWD"));
-	g_ms.lexer_list = NULL;
+	ms->env = ft_set_env(env);
+	ft_set_path(ms);
+	ms->pwd = ft_strdup(getenv("PWD"));
+	ms->oldpwd = ft_strdup(getenv("OLDPWD"));
+	ms->lexer_list = NULL;
+	ms->process_count = 0;
 
+	// //print env
 	// printf(("\n"));
 	// int i = 0;
-	// while (g_ms.env[i])
-	// 	printf("%s\n", g_ms.env[i++]);
+	// while (ms->env[i])
+	// 	printf("%s\n", ms->env[i++]);
+	// printf(("\n"));
+
+	// //print path
+	// printf(("\n"));
+	// i = 0;
+	// while (ms->path[i])
+	// 	printf("%s\n", ms->path[i++]);
 	// printf(("\n"));
 	
 }

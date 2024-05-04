@@ -9,5 +9,5 @@ int	ft_istoken(int c)
 	else if (c == '>')
 		return (5);
 	else
-		return (1);
+		return (FALSE);
 }
