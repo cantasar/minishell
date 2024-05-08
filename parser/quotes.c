@@ -49,7 +49,7 @@ char	*ft_clean_quote(char *str)
 
 	i = 0;
 	result = NULL;
-	// str = dollar(str);
+	// str = ft_check_dollar(str);
 	while (str[i])
 	{
 		if (str[i] == D_Q)
@@ -60,6 +60,6 @@ char	*ft_clean_quote(char *str)
 			data = get_str(str, &i);
 		push_new_str(&result, data);
 	}
-	free(str);
+	//free(str);
 	return (result);
 }

@@ -3,44 +3,29 @@
 int	ft_fill_process(t_data *ms, t_lexer **lexer_list, t_process *process)
 {
 	char		*data;
-	(void)process;
 	(void)ms;
 
 	if ((*lexer_list)->token == STRING)
 	{
 		data = ft_clean_quote((*lexer_list)->str);
-		printf("q removed->%s\n", data);
 		process->execute = ft_add_arr(process->execute, data);
-
-		
-
-
-
-
 	}
-		int i = 0;
-		while (process->execute[i])
+	else
+	{
+		data = ft_clean_quote((*lexer_list)->str);
+		process->redirects = ft_add_arr(process->redirects, data);
+		*lexer_list = (*lexer_list)->next;
+		if (!(*lexer_list) || (*lexer_list)->token != STRING)
 		{
-			printf("process->execute[%d]-> %s\n", i, process->execute[i]);
-			i++;
+			if (!(*lexer_list))
+				ft_token_err(0);
+			else
+				ft_token_err((*lexer_list)->token);
+			return (FALSE);
 		}
-	// else
-	// {
-	// 	data = ft_clean_quote((*lexer_list)->str);
-	// 	process->redirects = push_array(process->redirects, data);
-	// 	*lexer_list = (*lexer_list)->next;
-	// 	if (!(*lexer_list) || (*lexer_list)->token != STRING) // tokendan sonra string gelmeme durumu -> abc <<< asd
-	// 	{
-	// 		if (!(*lexer_list))
-	// 			ft_token_err(1);
-	// 		else
-	// 			ft_token_err((*lexer_list)->token);
-	// 		ft_free_lexer(ms);
-	// 		return (FALSE);
-	// 	}
-	// 	data = ft_clean_quote((*lexer_list)->str);
-	// 	process->redirects = push_array(process->redirects, data);
-	// }
+		data = ft_clean_quote((*lexer_list)->str);
+		process->redirects = ft_add_arr(process->redirects, data);
+	}
 	return (TRUE);
 }
 
@@ -61,7 +46,7 @@ int	ft_new_process(t_data *ms, t_lexer *list, t_process *process)
 			ft_token_err(PIPE);
 			break ;
 		}
-		if (!ft_fill_process(ms, &list, process))
+		if (ft_fill_process(ms, &list, process) == FALSE)
 			return (FALSE);
 		list = list->next;
 	}
@@ -81,7 +66,35 @@ int	ft_parser(t_data *ms)
 	err = ft_new_process(ms, token, process);
 	if (err == FALSE)
 		return (FALSE);
-	printf("process sayısı --> %d\n", ms->process_count);
+
+
+			//print **execute
+			int i = 0;
+			while (ms->process->execute[i])
+			{
+				printf("process->execute[%d]-> %s\n", i, ms->process->execute[i]);
+				i++;
+			}
+			ms->process = ms->process->next;
+			printf("\n\n");
+			i=0;
+			while (ms->process->execute[i])
+			{
+				printf("process->execute[%d]-> %s\n", i, ms->process->execute[i]);
+				i++;
+			}
+
+			printf("\n\n");
+
+			//print **redirects
+			i = 0;
+			while (ms->process->redirects[i])
+			{
+				printf("process->redirects[%d]-> %s\n", i, ms->process->redirects[i]);
+				i++;
+			}
+
+
 	return (TRUE);
 }
 

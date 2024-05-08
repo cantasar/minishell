@@ -11,6 +11,8 @@ void	ft_free_lexer(t_data *ms)
 		free(lexer_list->str);
 		lexer_list = lexer_list->next;
 	}
+
+
 	lexer_list = ms->lexer_list;
 	while (lexer_list)
 	{

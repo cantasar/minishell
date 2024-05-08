@@ -23,19 +23,31 @@ int	ft_handle_token(t_data *ms, t_lexer **list, int i)
 	token = ft_istoken(ms->line[i]);
 	if (token == GREAT && ft_istoken(ms->line[i + 1]) == GREAT)
 	{
-		if (!ft_token(NULL, GREAT_GREAT, list))
+		if (!ft_token(ft_strdup(">>"), GREAT_GREAT, list))
 			return (-1);
 		return (2);
 	}
 	else if (token == LESS && ft_istoken(ms->line[i + 1]) == LESS)
 	{
-		if (!ft_token(NULL, LESS_LESS, list))
+		if (!ft_token(ft_strdup("<<"), LESS_LESS, list))
 			return (-1);
 		return (2);
 	}
-	else if (token)
+	else if (token == GREAT)
 	{
-		if (!ft_token(NULL, token, list))
+		if (!ft_token(ft_strdup(">"), token, list))
+			return (-1);
+		return (1);
+	}
+	else if (token == LESS)
+	{
+		if (!ft_token(ft_strdup("<"), token, list))
+			return (-1);
+		return (1);
+	}
+	else if (token == PIPE)
+	{
+		if (!ft_token(ft_strdup("|"), token, list))
 			return (-1);
 		return (1);
 	}

@@ -13,6 +13,7 @@ void	ft_loop(t_data *ms, char **env)
 		ms->line = ft_strdup(line);
 		free(line);
 		ft_init_ms(ms, env);
+		add_history(ms->line);
 		if (ft_lexer(ms) && ft_parser(ms))
 		{
 			printf("execute\n-\n\n");
@@ -21,7 +22,6 @@ void	ft_loop(t_data *ms, char **env)
 		{
 			printf(" -exec edilmedi \n   -free \n -loop \n\n\n");
 		}
-		add_history(ms->line);
 		ft_free_lexer(ms);
 	}
 }

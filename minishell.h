@@ -17,6 +17,7 @@
 
 # define D_Q '"'
 # define S_Q '\''
+# define DOLLAR '$'
 
 typedef enum e_ttype
 {

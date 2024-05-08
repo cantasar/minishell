@@ -4,10 +4,11 @@ SRCS =	main.c\
 		utils/ft_istoken.c\
 		utils/ft_add_arr.c\
 		lexer/lexer.c\
-		lexer/tokenize.c\
 		lexer/lexer_utils.c\
 		lexer/syntax_check.c\
+		lexer/tokenize.c\
 		parser/parser.c\
+		parser/parser_utils.c\
 		parser/process.c\
 		parser/quotes.c\
 		error/error.c\
