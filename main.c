@@ -23,6 +23,7 @@ void	ft_loop(t_data *ms, char **env)
 			printf(" -exec edilmedi \n   -free \n -loop \n\n\n");
 		}
 		ft_free_lexer(ms);
+		ft_free_process(ms);
 	}
 }
 

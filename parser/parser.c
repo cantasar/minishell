@@ -3,16 +3,15 @@
 int	ft_fill_process(t_data *ms, t_lexer **lexer_list, t_process *process)
 {
 	char		*data;
-	(void)ms;
 
 	if ((*lexer_list)->token == STRING)
 	{
-		data = ft_clean_quote((*lexer_list)->str);
+		data = ft_clean_quote(ms, (*lexer_list)->str);
 		process->execute = ft_add_arr(process->execute, data);
 	}
 	else
 	{
-		data = ft_clean_quote((*lexer_list)->str);
+		data = ft_clean_quote(ms, (*lexer_list)->str);
 		process->redirects = ft_add_arr(process->redirects, data);
 		*lexer_list = (*lexer_list)->next;
 		if (!(*lexer_list) || (*lexer_list)->token != STRING)
@@ -23,7 +22,7 @@ int	ft_fill_process(t_data *ms, t_lexer **lexer_list, t_process *process)
 				ft_token_err((*lexer_list)->token);
 			return (FALSE);
 		}
-		data = ft_clean_quote((*lexer_list)->str);
+		data = ft_clean_quote(ms, (*lexer_list)->str);
 		process->redirects = ft_add_arr(process->redirects, data);
 	}
 	return (TRUE);
@@ -55,7 +54,6 @@ int	ft_new_process(t_data *ms, t_lexer *list, t_process *process)
 
 int	ft_parser(t_data *ms)
 {
-	printf("parser\n");
 
 	t_lexer		*token;
 	t_process	*process;
@@ -69,20 +67,24 @@ int	ft_parser(t_data *ms)
 
 
 			//print **execute
+			printf("\n\n");
+			printf("--PARSER--\n");
 			int i = 0;
 			while (ms->process->execute[i])
 			{
 				printf("process->execute[%d]-> %s\n", i, ms->process->execute[i]);
 				i++;
 			}
-			ms->process = ms->process->next;
-			printf("\n\n");
-			i=0;
-			while (ms->process->execute[i])
-			{
-				printf("process->execute[%d]-> %s\n", i, ms->process->execute[i]);
-				i++;
-			}
+			
+			// //eğer pipe yoksa bu kısım yazdırılırken seg fault alır
+			// ms->process = ms->process->next;
+			// printf("\n\n");
+			// i=0;
+			// while (ms->process->execute[i])
+			// {
+			// 	printf("process->execute[%d]-> %s\n", i, ms->process->execute[i]);
+			// 	i++;
+			// }
 
 			printf("\n\n");
 

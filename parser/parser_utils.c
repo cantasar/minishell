@@ -1,28 +1,58 @@
 #include "../minishell.h"
 
-int	valid_op(char c)
+static char	*get_str(char *str, int	*pos, int type)
 {
-	return ((c >= 'a' && c <= 'z') || \
-			(c >= 'A' && c <= 'Z') || \
-			(c >= '0' && c <= '9') || \
-			(c == '_') || (c == '?'));
+	int		first;
+	char	*data;
+
+	first = *pos;
+	while (str[*pos] != type)
+		(*pos)++;
+	data = ft_substr(str, first, *pos - first);
+	(*pos)++;
+	return (data);
 }
 
-int ft_inquote(char *str) {
-	int i = 0;
-	int single_quote = TRUE;
-	int double_quote = FALSE;
+char	*parse_dollar_op(t_data *ms, char *str)
+{
+	int		i;
+	int		first;
+	char	*env;
+	char	*result;
+	char	*data;
 
-	while (str[i] && str[i] != DOLLAR) {
-		if (str[i] == S_Q) {
-			single_quote = double_quote;
-		} else if (str[i] == D_Q) {
-			double_quote = !double_quote;
-		}
-		i++;
+	i = 0;
+	result = "";
+	data = get_str(str, &i, '$');
+	result = ft_strjoin(result, data);
+	first = i;
+	if (str[i] == '?' && ++i)
+		result = ft_strjoin(result, ft_itoa(errno));
+	else
+	{ 
+		while (ft_isvalid(str[i]))
+			(i)++;
+		data = ft_substr(str, first, i - first);
+		env = ft_getenv(ms, data);
+		result = ft_strjoin(result, env);
+		free(data);
 	}
-	if (!valid_op(*(ft_strchr(str, DOLLAR) + 1))) {
-		return FALSE;
+	data = get_str(str, &i, 0);
+	result = ft_strjoin(result, data);
+	return (result);
+}
+
+char	*ft_parse_dollar(t_data *ms, char *str)
+{
+	char	*tmp;
+	char	*new_str;
+
+	new_str = ft_strdup(str);
+	while (ft_strchr(new_str, '$') && ft_in_squote(new_str))
+	{
+		tmp = new_str;
+		new_str = parse_dollar_op(ms, new_str);
+		free(tmp);
 	}
-	return (single_quote);
+	return (new_str);
 }

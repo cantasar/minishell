@@ -13,9 +13,12 @@ int	ft_lexer(t_data *ms)
 	ft_tokenize(ms, &ms->lexer_list);
 	
 	//lexerlist print
+	printf("\n\n");
+	printf("--LEXER--\n");
 	t_lexer	*tmp;
 
 	tmp = ms->lexer_list;
+
 	while (tmp)
 	{
 		printf("token type: %d\n", tmp->token);

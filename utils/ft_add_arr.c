@@ -17,6 +17,7 @@ char	**ft_add_arr(char **arr, char *new)
 		i++;
 	}
 	new_arr[i] = new;
-	free(arr);
+	if (arr[0])
+		free(arr);
 	return (new_arr);
 }

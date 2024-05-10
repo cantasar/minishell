@@ -2,17 +2,13 @@
 
 void	push_new_str(char **new_str, char *str)
 {
-	char	*tmp;
-
 	if (!(*new_str))
 	{
 		*new_str = ft_strdup(str);
 		free(str);
 		return ;
 	}
-	tmp = *new_str;
 	*new_str = ft_strjoin(*new_str, str);
-	free(tmp);
 	free(str);
 }
 
@@ -41,7 +37,7 @@ static char	*get_str(char *str, int	*pos)
 	return (ft_substr(str, first, *pos - first));
 }
 
-char	*ft_clean_quote(char *str)
+char	*ft_clean_quote(t_data *ms, char *str)
 {
 	int		i;
 	char	*data;
@@ -49,7 +45,9 @@ char	*ft_clean_quote(char *str)
 
 	i = 0;
 	result = NULL;
-	// str = ft_check_dollar(str);
+		
+	str = ft_parse_dollar(ms, str);
+	
 	while (str[i])
 	{
 		if (str[i] == D_Q)
@@ -60,6 +58,6 @@ char	*ft_clean_quote(char *str)
 			data = get_str(str, &i);
 		push_new_str(&result, data);
 	}
-	//free(str);
+	// free(str);
 	return (result);
 }

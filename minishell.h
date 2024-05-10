@@ -62,11 +62,13 @@ typedef struct s_data
 
 //utils
 void		ft_init_ms(t_data *ms, char **env);
+char		*ft_getenv(t_data *ms, char *str);
 int 		ft_check_quotes(char *line);
-
 int			ft_iswhitespace(char c);
 int			ft_istoken(int c);
+int			ft_isvalid(char c);
 char		**ft_add_arr(char **arr, char *new);
+int			ft_in_squote(char *str);
 
 //Lexer
 int	ft_lexer(t_data *ms);
@@ -87,7 +89,9 @@ int	ft_parser(t_data *ms);
 t_process	*ft_init_process(void);
 void	ft_process_addback(t_process **process, t_process *new_process);
 
-char	*ft_clean_quote(char *str);
+char	*ft_clean_quote(t_data *ms, char *str);
+
+char	*ft_parse_dollar(t_data *ms, char *str);
 
 //error
 void	ft_token_err(int type);

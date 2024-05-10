@@ -3,6 +3,9 @@ SRCS =	main.c\
 		utils/ft_iswhitespace.c\
 		utils/ft_istoken.c\
 		utils/ft_add_arr.c\
+		utils/ft_in_squote.c\
+		utils/ft_isvalid.c\
+		utils/ft_getenv.c\
 		lexer/lexer.c\
 		lexer/lexer_utils.c\
 		lexer/syntax_check.c\
