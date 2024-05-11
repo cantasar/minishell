@@ -14,6 +14,7 @@ SRCS =	main.c\
 		parser/parser_utils.c\
 		parser/process.c\
 		parser/quotes.c\
+		execute/execute.c\
 		error/error.c\
 		free/free.c\
 

@@ -1,5 +1,41 @@
 #include "../minishell.h"
 
+
+
+//--------------PARSER PRINT FONKSİYONU--------------
+void print_all_processes(t_process *process) {
+    int i;
+
+	printf("--------------PARSER--------------");
+    while (process) {
+        printf("\n\n");
+
+        // Print execute commands
+        printf("-- Commands --\n");
+        i = 0;
+        while (process->execute[i]) {
+            printf("execute[%d]: %s\n", i, process->execute[i]);
+            i++;
+        }
+
+        // Print redirects (handle potential null pointer)
+        printf("\n-- Redirects --\n");
+        if (process->redirects) {
+            i = 0;
+            while (process->redirects[i]) {
+                printf("redirects[%d]: %s\n", i, process->redirects[i]);
+                i++;
+            }
+        } else {
+            printf("No redirects found.\n");
+        }
+        process = process->next;
+		printf("\n--------------------------------\n");
+    }
+}
+//--------------PRINT FONKSİYONU--------------
+
+
 int	ft_fill_process(t_data *ms, t_lexer **lexer_list, t_process *process)
 {
 	char		*data;
@@ -65,36 +101,8 @@ int	ft_parser(t_data *ms)
 	if (err == FALSE)
 		return (FALSE);
 
-
-			//print **execute
-			printf("\n\n");
-			printf("--PARSER--\n");
-			int i = 0;
-			while (ms->process->execute[i])
-			{
-				printf("process->execute[%d]-> %s\n", i, ms->process->execute[i]);
-				i++;
-			}
-			
-			// //eğer pipe yoksa bu kısım yazdırılırken seg fault alır
-			// ms->process = ms->process->next;
-			// printf("\n\n");
-			// i=0;
-			// while (ms->process->execute[i])
-			// {
-			// 	printf("process->execute[%d]-> %s\n", i, ms->process->execute[i]);
-			// 	i++;
-			// }
-
-			printf("\n\n");
-
-			//print **redirects
-			i = 0;
-			while (ms->process->redirects[i])
-			{
-				printf("process->redirects[%d]-> %s\n", i, ms->process->redirects[i]);
-				i++;
-			}
+		t_process *p = ms->process;
+		print_all_processes(p);
 
 
 	return (TRUE);

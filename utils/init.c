@@ -57,6 +57,7 @@ void	ft_init_ms(t_data *ms, char **env)
 	ms->lexer_list = NULL;
 	ms->process = NULL;
 	ms->process_count = 0;
+	ms->exit_signal = FALSE;
 
 	// //print env
 	// printf(("\n"));

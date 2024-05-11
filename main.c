@@ -17,6 +17,7 @@ void	ft_loop(t_data *ms, char **env)
 		if (ft_lexer(ms) && ft_parser(ms))
 		{
 			printf("execute\n-\n\n");
+			ft_execute(ms);
 		}
 		else
 		{

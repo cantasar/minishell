@@ -56,6 +56,7 @@ typedef struct s_data
 	char		*pwd;
 	char		*oldpwd;
 	int			process_count;
+	int			exit_signal;
 	t_lexer		*lexer_list;
 	t_process	*process;
 }	t_data;
@@ -92,6 +93,10 @@ void	ft_process_addback(t_process **process, t_process *new_process);
 char	*ft_clean_quote(t_data *ms, char *str);
 
 char	*ft_parse_dollar(t_data *ms, char *str);
+
+//execute
+
+int	ft_execute(t_data *ms);
 
 //error
 void	ft_token_err(int type);
