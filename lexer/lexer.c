@@ -8,25 +8,25 @@ int	ft_lexer(t_data *ms)
 		return (FALSE);
 	else if(ft_check_quotes(ms->line) == TRUE)
 		return (FALSE);
-	else if(ft_check_operator(ms->line) == TRUE)
-		return (FALSE);
+	// else if(ft_check_operator(ms->line) == TRUE)
+	// 	return (FALSE);
 	ft_tokenize(ms, &ms->lexer_list);
 	
 	//lexerlist print
-	printf("\n\n");
-	printf("--LEXER--\n");
-	t_lexer	*tmp;
+		printf("\n\n");
+		printf("--LEXER--\n");
+		t_lexer	*tmp;
 
-	tmp = ms->lexer_list;
+		tmp = ms->lexer_list;
 
-	while (tmp)
-	{
-		printf("token type: %d\n", tmp->token);
-		printf("token str: %s\n", tmp->str);
-		printf("------\n");
-		tmp = tmp->next;
-	}
-	printf("\n");
+		while (tmp)
+		{
+			printf("token type: %d\n", tmp->token);
+			printf("token str: %s\n", tmp->str);
+			printf("------\n");
+			tmp = tmp->next;
+		}
+		printf("\n");
 
 
 	return(TRUE);
