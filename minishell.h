@@ -1,12 +1,15 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-#include "./libft/libft.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <readline/readline.h>
-#include <readline/history.h>
+# include "./libft/libft.h"
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <sys/ioctl.h>
+# include <fcntl.h>
+# include <dirent.h>
 
 # include <errno.h>
 
@@ -18,6 +21,17 @@
 # define D_Q '"'
 # define S_Q '\''
 # define DOLLAR '$'
+
+enum e_builtin_types
+{
+	CD = 1,
+	ENV,
+	PWD,
+	ECHO,
+	EXIT,
+	UNSET,
+	EXPORT
+};
 
 typedef enum e_ttype
 {
@@ -66,10 +80,14 @@ void		ft_init_ms(t_data *ms, char **env);
 char		*ft_getenv(t_data *ms, char *str);
 int 		ft_check_quotes(char *line);
 int			ft_iswhitespace(char c);
+int			ft_isoperator(char *str);
 int			ft_istoken(int c);
 int			ft_isvalid(char c);
+int			ft_is_hd(t_process *process);
 char		**ft_add_arr(char **arr, char *new);
 int			ft_in_squote(char *str);
+int			ft_strcmp(const char *s1, const char *s2);
+char		*get_path(char *cmd);
 
 //Lexer
 int	ft_lexer(t_data *ms);
@@ -96,7 +114,18 @@ char	*ft_parse_dollar(t_data *ms, char *str);
 
 //execute
 
-int	ft_execute(t_data *ms);
+int		ft_execute(t_data *ms);
+
+	//heredoc
+	void	ft_heredoc(t_data *ms);
+
+
+
+//builtin
+int		ft_isbuiltin(char *command);
+void	run_builtin(char **execute);
+
+
 
 //error
 void	ft_token_err(int type);

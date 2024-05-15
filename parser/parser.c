@@ -1,36 +1,37 @@
 #include "../minishell.h"
 
+
+
 //--------------PARSER PRINT FONKSİYONU--------------
 void print_all_processes(t_process *process) {
-	int i;
+    int i;
 
 	printf("--------------PARSER--------------");
-	while (process) {
-		printf("\n\n-- Commands --\n");
-		i = 0;
-		while (process->execute[i])
-		{
-			printf("execute[%d]: %s\n", i, process->execute[i]);
-			i++;
-		}
+    while (process) {
+        printf("\n\n");
 
-		printf("\n-- Redirects --\n");
-		if (process->redirects)
-		{
-			i = 0;
-			while (process->redirects[i])
-			{
-				printf("redirects[%d]: %s\n", i, process->redirects[i]);
-				i++;
-			}
-		}
-		else
-		{
-			printf("no redirects\n");
-		}
-		process = process->next;
+        // Print execute commands
+        printf("-- Commands --\n");
+        i = 0;
+        while (process->execute[i]) {
+            printf("execute[%d]: %s\n", i, process->execute[i]);
+            i++;
+        }
+
+        // Print redirects (handle potential null pointer)
+        printf("\n-- Redirects --\n");
+        if (process->redirects) {
+            i = 0;
+            while (process->redirects[i]) {
+                printf("redirects[%d]: %s\n", i, process->redirects[i]);
+                i++;
+            }
+        } else {
+            printf("No redirects found.\n");
+        }
+        process = process->next;
 		printf("\n--------------------------------\n");
-	}
+    }
 }
 //--------------PRINT FONKSİYONU--------------
 
@@ -92,16 +93,33 @@ int	ft_parser(t_data *ms)
 
 	t_lexer		*token;
 	t_process	*process;
+	int			err;
 
 	process = NULL;
 	token = ms->lexer_list;
-	if (ft_new_process(ms, token, process) == FALSE)
+	err = ft_new_process(ms, token, process);
+	if (err == FALSE)
 		return (FALSE);
 
-		//print
 		t_process *p = ms->process;
 		print_all_processes(p);
 
 
 	return (TRUE);
 }
+
+
+
+
+
+
+	// t_process	*tmp;
+	// tmp = ms->process;
+	// while (tmp)
+	// {
+	// 	printf("exec str0: %s\n", tmp->execute[0]);
+	// 	printf("exec str1: %s\n", tmp->execute[1]);
+	// 	printf("------\n");
+	// 	tmp = tmp->next;
+	// }
+	// printf("\n");

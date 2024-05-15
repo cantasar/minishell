@@ -1,11 +1,15 @@
 SRCS =	main.c\
 		utils/init.c\
 		utils/ft_iswhitespace.c\
+		utils/ft_isoperator.c\
 		utils/ft_istoken.c\
 		utils/ft_add_arr.c\
 		utils/ft_in_squote.c\
 		utils/ft_isvalid.c\
+		utils/ft_is_hd.c\
 		utils/ft_getenv.c\
+		utils/get_path.c\
+		utils/ft_strcmp.c\
 		lexer/lexer.c\
 		lexer/lexer_utils.c\
 		lexer/syntax_check.c\
@@ -15,6 +19,8 @@ SRCS =	main.c\
 		parser/process.c\
 		parser/quotes.c\
 		execute/execute.c\
+		execute/heredoc.c\
+		builtin/builtin.c\
 		error/error.c\
 		free/free.c\
 

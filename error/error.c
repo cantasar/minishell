@@ -24,7 +24,7 @@ void	ft_token_err(int type)
 		red = ">>";
 	else if (type == PIPE)
 		red = "|";
-	else if (type == 0)
+	else
 		red = "newline";
 	errno = 258;
 	write(2, "minishell: syntax error near unexpected token '", 47);
