@@ -1,5 +1,5 @@
 SRCS =	main.c\
-		utils/init.c\
+		utils/ft_init.c\
 		utils/ft_iswhitespace.c\
 		utils/ft_isoperator.c\
 		utils/ft_istoken.c\
@@ -20,27 +20,27 @@ SRCS =	main.c\
 		utils/ft_set_export.c\
 		utils/ft_isinclude.c\
 		utils/ft_swap.c\
-		lexer/lexer.c\
-		lexer/lexer_utils.c\
-		lexer/syntax_check.c\
-		lexer/tokenize.c\
-		parser/parser.c\
-		parser/parser_utils.c\
-		parser/process.c\
-		parser/quotes.c\
-		execute/execute.c\
-		execute/execute_utils.c\
-		execute/heredoc.c\
-		builtin/builtin.c\
-		builtin/echo.c\
-		builtin/cd.c\
-		builtin/env.c\
-		builtin/exit.c\
-		builtin/export.c\
-		builtin/unset.c\
-		builtin/pwd.c\
-		error/error.c\
-		free/free.c\
+		lexer/ft_lexer.c\
+		lexer/ft_lexer_utils.c\
+		lexer/ft_syntax_check.c\
+		lexer/ft_tokenize.c\
+		parser/ft_parser.c\
+		parser/ft_parser_utils.c\
+		parser/ft_process.c\
+		parser/ft_quotes.c\
+		execute/ft_execute.c\
+		execute/ft_execute_utils.c\
+		execute/ft_heredoc.c\
+		builtin/ft_builtin.c\
+		builtin/ft_echo.c\
+		builtin/ft_cd.c\
+		builtin/ft_env.c\
+		builtin/ft_exit.c\
+		builtin/ft_export.c\
+		builtin/ft_unset.c\
+		builtin/ft_pwd.c\
+		error/ft_error.c\
+		free/ft_free.c\
 
 CC = @gcc
 NAME = minishell
@@ -63,7 +63,6 @@ $(READLINE):
 $(NAME): $(OBJS)
 	make -C $(LIBFT)
 	$(CC) -o $(NAME) $(OBJS) $(CFLAGS) ./libft/libft.a -L${PWD}/readline/lib  -I${PWD}/readline/include/ -lreadline
-	make clean
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@ -I${PWD}/readline/include/

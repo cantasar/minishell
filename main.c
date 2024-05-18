@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ctasar <ctasar@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/18 17:45:12 by ctasar            #+#    #+#             */
+/*   Updated: 2024/05/18 18:39:13 by ctasar           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	ctrl_c(int sig)
@@ -27,11 +39,11 @@ void	ft_free_all(t_data *ms)
 
 void	ft_loop(t_data *ms, char **env)
 {
-	while (TRUE)
-	{
-		char	*line;
+	char	*line;
 
 	ft_init_ms(ms, env);
+	while (TRUE)
+	{
 		ft_check_flag(ms);
 		ms->exit_signal = FALSE;
 		signal(SIGINT, &ctrl_c);
@@ -53,9 +65,9 @@ void	ft_loop(t_data *ms, char **env)
 	}
 }
 
-int main(int argc, char *argv[], char **env)
+int	main(int argc, char *argv[], char **env)
 {
-	t_data ms;
+	t_data	ms;
 
 	if (argc != 1 || argv[1])
 	{
@@ -63,6 +75,5 @@ int main(int argc, char *argv[], char **env)
 		exit(EXIT_SUCCESS);
 	}
 	ft_loop(&ms, env);
-
 	return (0);
 }

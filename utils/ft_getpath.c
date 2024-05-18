@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*																			*/
+/*														:::	  ::::::::   */
+/*   ft_getpath.c									   :+:	  :+:	:+:   */
+/*													+:+ +:+		 +:+	 */
+/*   By: ctasar <ctasar@student.42istanbul.com.t	+#+  +:+	   +#+		*/
+/*												+#+#+#+#+#+   +#+		   */
+/*   Created: 2024/05/18 17:43:40 by ctasar			#+#	#+#			 */
+/*   Updated: 2024/05/18 18:27:54 by ctasar		   ###   ########.fr	   */
+/*																			*/
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 void	directory_err(t_data *ms, char *str)
@@ -25,32 +37,43 @@ void	check_dir(t_data *ms, char *cmd)
 	}
 }
 
+int	ft_prepare_path_search(t_data *ms, char *cmd, char **new_cmd)
+{
+	check_dir(ms, cmd);
+	if (!access(cmd, F_OK))
+		return (1);
+	if (!ms->path)
+	{
+		ft_not_found_err(ms, cmd);
+		return (-1);
+	}
+	*new_cmd = ft_strjoin("/", cmd);
+	return (0);
+}
+
 char	*ft_getpath(t_data *ms, char *cmd)
 {
 	char	*path;
-	char	**paths;
 	char	*new_cmd;
+	int		result;
 
-	check_dir(ms, cmd);
-	if (!access(cmd, F_OK))
+	result = ft_prepare_path_search(ms, cmd, &new_cmd);
+	if (result == 1)
 		return (ft_strdup(cmd));
-	paths = ms->path;
-	if (!paths)
-		ft_not_found_err(ms, cmd);
-	new_cmd = ft_strjoin("/", cmd);
-	while (*paths)
+	else if (result == -1)
+		return (NULL);
+	while (*ms->path)
 	{
-		path = ft_strjoin(*paths, new_cmd);
+		path = ft_strjoin(*ms->path++, new_cmd);
 		if (!access(path, F_OK))
 		{
 			free(new_cmd);
 			return (path);
 		}
 		free(path);
-		paths++;
 	}
+	free(new_cmd);
 	if (ft_strchr(cmd, '/'))
 		ft_nofile_err(ms, cmd);
-	free(new_cmd);
 	return (NULL);
 }
