@@ -58,7 +58,6 @@ int ft_check_quotes(char *line)
 		if ((int)ft_strlen(line) == i)
 			break ;
 	}
-	//Toplam Quote sayısının çift olması gerekli kapanmış olması için
 	if ((d_q > 0 && d_q % 2 != 0) || (s_q > 0 && s_q % 2 != 0))
 	{
 		ft_putstr_fd("syntax error: unable to locate closing quotation\n", STDERR_FILENO);

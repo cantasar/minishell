@@ -1,5 +1,22 @@
 #include "minishell.h"
 
+void	ctrl_c(int sig)
+{
+	(void)sig;
+	*g_signal = TRUE;
+	ioctl(STDIN_FILENO, TIOCSTI, "\n");
+	write(1, "\033[A", 3);
+}
+
+void	ctrl_d(char *input)
+{
+	if (!input)
+	{
+		printf("exit\n");
+		exit(errno);
+	}
+}
+
 void	ft_free_all(t_data *ms)
 {
 	ms->lexer_list = NULL;
@@ -10,20 +27,26 @@ void	ft_free_all(t_data *ms)
 
 void	ft_loop(t_data *ms, char **env)
 {
-	ft_init_ms(ms, env);
 	while (TRUE)
 	{
 		char	*line;
 
+	ft_init_ms(ms, env);
+		ft_check_flag(ms);
+		ms->exit_signal = FALSE;
+		signal(SIGINT, &ctrl_c);
+		signal(SIGQUIT, SIG_IGN);
 		line = readline("minishell$: ");
+		ft_check_flag(ms);
+		ctrl_d(line);
 		line = ft_strtrim(line, " ", "\t");
 		ms->line = ft_strdup(line);
-		free(line);
 		add_history(ms->line);
 		if (ft_lexer(ms) && ft_parser(ms))
 		{
 			ft_execute(ms);
 		}
+		free(line);
 		ft_free_all(ms);
 		ft_free_lexer(ms);
 		ft_free_process(ms);

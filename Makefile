@@ -12,6 +12,14 @@ SRCS =	main.c\
 		utils/ft_getenv.c\
 		utils/ft_getpath.c\
 		utils/ft_strcmp.c\
+		utils/ft_check_flag.c\
+		utils/ft_export_len.c\
+		utils/ft_export_check.c\
+		utils/ft_print_export.c\
+		utils/ft_export_pos.c\
+		utils/ft_set_export.c\
+		utils/ft_isinclude.c\
+		utils/ft_swap.c\
 		lexer/lexer.c\
 		lexer/lexer_utils.c\
 		lexer/syntax_check.c\

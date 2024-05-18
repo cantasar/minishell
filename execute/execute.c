@@ -89,7 +89,7 @@ void	ft_start_process(t_data *ms, t_process *process)
 		ft_handle_fds(ms, process);
 		path = ft_getpath(ms, process->execute[0]);
 		execve(path, process->execute, ms->env);
-		// free(path);
+		free(path);
 		ft_not_found_err(ms, process->execute[0]);
 		exit(errno);
 	}

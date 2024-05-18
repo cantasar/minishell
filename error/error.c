@@ -45,10 +45,10 @@ void	ft_nofile_err(t_data *ms, char *str)
 	exit(errno);
 }
 
-// void	export_err(char *str)
-// {
-// 	printf(" \"%s\" : not a valid identifier\n", str);
-// 	errno = 1;
-// 	if (is_child())
-// 		exit(errno);
-// }
+void	export_err(t_data *ms, char *str)
+{
+	printf(" \"%s\" : not a valid identifier\n", str);
+	errno = 1;
+	if (ft_ischild(ms))
+		exit(errno);
+}

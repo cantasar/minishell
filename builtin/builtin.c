@@ -6,7 +6,7 @@
 /*   By: ctasar <ctasar@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 00:06:52 by ctasar            #+#    #+#             */
-/*   Updated: 2024/05/18 14:15:31 by ctasar           ###   ########.fr       */
+/*   Updated: 2024/05/18 17:16:54 by ctasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ void	run_builtin(t_data *ms, char **execute)
 		ft_echo(ms, execute);
 	if (type == EXIT)
 		ft_exit(execute);
-	// if (type == UNSET)
-	// 	ft_unset(ms, execute);
-	// if (type == EXPORT)
-	// 	ft_export(ms, execute);
+	if (type == UNSET)
+		ft_unset(ms, execute);
+	if (type == EXPORT)
+		ft_export(ms, execute);
 }

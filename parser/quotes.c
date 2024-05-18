@@ -58,6 +58,6 @@ char	*ft_clean_quote(t_data *ms, char *str)
 			data = get_str(str, &i);
 		push_new_str(&result, data);
 	}
-	// free(str);
+	free(str);
 	return (result);
 }

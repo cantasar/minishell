@@ -22,6 +22,8 @@
 # define S_Q '\''
 # define DOLLAR '$'
 
+int	*g_signal;
+
 enum e_builtin_types
 {
 	CD = 1,
@@ -68,8 +70,7 @@ typedef struct s_data
 	char		**env;
 	char		**path;
 	char		**export;
-	char		*pwd;
-	char		*oldpwd;
+	int			err_flag;
 	int			process_count;
 	int			child_pid;
 	int			exit_signal;
@@ -93,6 +94,19 @@ int			ft_in_squote(char *str);
 int			ft_strcmp(const char *s1, const char *s2);
 char		*ft_getpath(t_data *ms, char *cmd);
 int			ft_child_pid(void);
+void		ft_check_flag(t_data *ms);
+int			ft_export_len(t_data *ms);
+int			ft_env_len(t_data *ms);
+int			check_env(t_data *ms, char *str);
+void		set_export(t_data *ms, char **env);
+int			check_export(t_data *ms, char *str);
+int			export_check_char(char *str);
+int			is_include_export(t_data *ms, char *str);
+int			is_include_env(t_data *ms, char *str);
+void	swap_env(t_data *ms, int pos, char *input);
+void	swap_export(t_data *ms, int pos, char *input);
+void	print_export(t_data *ms);
+int	export_pos(char *str, char *export);
 
 //Lexer
 int	ft_lexer(t_data *ms);
@@ -124,10 +138,8 @@ int		ft_execute(t_data *ms);
 void	ft_change_in(t_data *ms, t_process *process);
 void	ft_change_out(t_data *ms, t_process *process);
 
-	//heredoc
-	void	ft_heredoc(t_data *ms);
-
-
+//heredoc
+void	ft_heredoc(t_data *ms);
 
 //builtin
 int		ft_isbuiltin(char *command);
@@ -140,10 +152,14 @@ void	ft_export(t_data *ms, char **input);
 void	ft_pwd(t_data *ms);
 void	ft_unset(t_data *ms, char **input);
 
+void	add_export(t_data *ms, char *str);
+
+
 //error
 void	ft_token_err(int type);
 void	ft_nofile_err(t_data *ms, char *str);
 void	ft_not_found_err(t_data *ms, char *str);
+void	export_err(t_data *ms, char *str);
 
 //free
 void	ft_free_lexer(t_data *ms);
