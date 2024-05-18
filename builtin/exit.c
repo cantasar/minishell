@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctasar <ctasar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ctasar <ctasar@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 00:09:20 by ctasar            #+#    #+#             */
-/*   Updated: 2024/05/18 00:09:50 by ctasar           ###   ########.fr       */
+/*   Updated: 2024/05/18 13:49:00 by ctasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	ft_isnumber_with_sign(char *arg)
 	return (TRUE);
 }
 
-void	builtin_exit(char **input)
+void	ft_exit(char **input)
 {
 	if (ft_get_arg_count(input) == 1)
 	{

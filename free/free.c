@@ -20,7 +20,7 @@ void	ft_free_lexer(t_data *ms)
 	}
 }
 
-void	ft_free_array(char **arr)
+void	ft_free_arr(char **arr)
 {
 	int	i;
 
@@ -43,8 +43,8 @@ void	ft_free_process(t_data *ms)
 		return ;
 	while (process)
 	{
-		ft_free_array(process->execute);
-		ft_free_array(process->redirects);
+		ft_free_arr(process->execute);
+		ft_free_arr(process->redirects);
 		tmp = process;
 		process = process->next;
 		free(tmp);

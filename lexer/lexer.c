@@ -8,8 +8,8 @@ int	ft_lexer(t_data *ms)
 		return (FALSE);
 	else if(ft_check_quotes(ms->line) == TRUE)
 		return (FALSE);
-	else if(ft_check_operator(ms->line) == TRUE)
-		return (FALSE);
+	// else if(ft_check_operator(ms->line) == TRUE)
+	// 	return (FALSE);
 	ft_tokenize(ms, &ms->lexer_list);
 	
 	//lexerlist print

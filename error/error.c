@@ -2,12 +2,12 @@
 
 void	ft_not_found_err(t_data *ms, char *str)
 {
+	(void)ms;
 	errno = 127;
 	write(2, "minishell: ", 11);
 	write(2, str, ft_strlen(str));
 	write(2, ": command not found\n", 20);
-	if (ft_ischild(ms))
-		exit(errno);
+	exit(errno);
 }
 
 void	ft_token_err(int type)
@@ -34,6 +34,7 @@ void	ft_token_err(int type)
 
 void	ft_nofile_err(t_data *ms, char *str)
 {
+	(void)ms;
 	if (ft_strchr(str, '/'))
 		errno = 127;
 	else
@@ -41,8 +42,7 @@ void	ft_nofile_err(t_data *ms, char *str)
 	write(2, "minishell: ", 11);
 	write(2, str, ft_strlen(str));
 	write(2, ": No such file or directory\n", 28);
-	if (ft_ischild(ms))
-		exit(errno);
+	exit(errno);
 }
 
 // void	export_err(char *str)

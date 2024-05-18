@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctasar <ctasar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ctasar <ctasar@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 00:06:52 by ctasar            #+#    #+#             */
-/*   Updated: 2024/05/18 01:05:35 by ctasar           ###   ########.fr       */
+/*   Updated: 2024/05/18 14:15:31 by ctasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,37 +31,23 @@ int	ft_isbuiltin(char *command)
 	return (FALSE);
 }
 
-void	builtin_pwd(void)
-{
-	char	*result;
-
-	result = getcwd((void *)0, 0);
-	if (!result)
-		perror("minishell ");
-	else
-		printf("%s\n", result);
-	free(result);
-	// if (is_child())
-	// 	exit(errno);
-}
-
-void	run_builtin(char **execute)
+void	run_builtin(t_data *ms, char **execute)
 {
 	int	type;
 
 	type = ft_isbuiltin(execute[0]);
-	// if (type == CD)
-	// 	builtin_cd(execute);
-	// if (type == ENV)
-	// 	builtin_env();
+	if (type == CD)
+		ft_cd(ms, execute);
+	if (type == ENV)
+		ft_env(ms);
 	if (type == PWD)
-		builtin_pwd();
-	// if (type == ECHO)
-	// 	builtin_echo(execute);
-	// if (type == EXIT)
-	// 	builtin_exit(execute);
+		ft_pwd(ms);
+	if (type == ECHO)
+		ft_echo(ms, execute);
+	if (type == EXIT)
+		ft_exit(execute);
 	// if (type == UNSET)
-	// 	builtin_unset(execute);
+	// 	ft_unset(ms, execute);
 	// if (type == EXPORT)
-	// 	builtin_export(execute);
+	// 	ft_export(ms, execute);
 }

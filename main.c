@@ -4,6 +4,7 @@ void	ft_free_all(t_data *ms)
 {
 	ms->lexer_list = NULL;
 	ms->process = NULL;
+	ms->process_count = 0;
 	ms->line = NULL;
 }
 
@@ -21,11 +22,8 @@ void	ft_loop(t_data *ms, char **env)
 		add_history(ms->line);
 		if (ft_lexer(ms) && ft_parser(ms))
 		{
-			printf("execute\n-\n\n");
 			ft_execute(ms);
 		}
-		else
-			printf(" -exec edilmedi \n   -free \n -loop \n\n\n");
 		ft_free_all(ms);
 		ft_free_lexer(ms);
 		ft_free_process(ms);

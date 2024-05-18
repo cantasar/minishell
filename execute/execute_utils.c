@@ -26,6 +26,8 @@ void	ft_change_in(t_data *ms, t_process *process)
 
 void	ft_change_out(t_data *ms, t_process *process)
 {
+	(void)ms;
+
 	int		i;
 	int		fd;
 	char	**redirects;

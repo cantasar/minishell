@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctasar <ctasar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ctasar <ctasar@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 00:07:29 by ctasar            #+#    #+#             */
-/*   Updated: 2024/05/18 00:08:16 by ctasar           ###   ########.fr       */
+/*   Updated: 2024/05/18 13:11:40 by ctasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	skip_flag(char **str)
 	return (i);
 }
 
-void	builtin_echo(t_data *ms, char **input)
+void	ft_echo(t_data *ms, char **input)
 {
 	int	i;
 	int	flag;

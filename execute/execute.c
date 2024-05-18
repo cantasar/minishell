@@ -43,14 +43,14 @@ void	ft_exec_builtin(t_data *ms, t_process *process)
 	out = dup(1);
 	ft_change_in(ms, process);
 	ft_change_out(ms, process);
-	run_builtin(process->execute);
+	run_builtin(ms, process->execute);
 	dup2(in, 0);
 	dup2(out, 1);
 	close(in);
 	close(out);
 }
 
-void	cmd_route(t_data *ms, t_process *process)
+void	ft_handle_fds(t_data *ms, t_process *process)
 {
 	if (ms->process_count > 1)
 	{
@@ -81,15 +81,15 @@ void	cmd_route(t_data *ms, t_process *process)
 void	ft_start_process(t_data *ms, t_process *process)
 {
 	pid_t	pid;
-	char	*path;
+	char	*path = NULL;
 
 	pid = fork();
 	if (pid == 0)
 	{
-		cmd_route(ms, process);
+		ft_handle_fds(ms, process);
 		path = ft_getpath(ms, process->execute[0]);
 		execve(path, process->execute, ms->env);
-		free(path);
+		// free(path);
 		ft_not_found_err(ms, process->execute[0]);
 		exit(errno);
 	}

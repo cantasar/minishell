@@ -131,7 +131,14 @@ void	ft_change_out(t_data *ms, t_process *process);
 
 //builtin
 int		ft_isbuiltin(char *command);
-void	run_builtin(char **execute);
+void	run_builtin(t_data *ms, char **execute);
+void	ft_cd(t_data *ms, char **input);
+void	ft_echo(t_data *ms, char **input);
+void	ft_env(t_data *ms);
+void	ft_exit(char **input);
+void	ft_export(t_data *ms, char **input);
+void	ft_pwd(t_data *ms);
+void	ft_unset(t_data *ms, char **input);
 
 //error
 void	ft_token_err(int type);
@@ -141,6 +148,7 @@ void	ft_not_found_err(t_data *ms, char *str);
 //free
 void	ft_free_lexer(t_data *ms);
 void	ft_free_process(t_data *ms);
+void	ft_free_arr(char **arr);
 
 
 #endif

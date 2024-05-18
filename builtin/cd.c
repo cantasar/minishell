@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctasar <ctasar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ctasar <ctasar@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 00:06:42 by ctasar            #+#    #+#             */
-/*   Updated: 2024/05/18 00:06:45 by ctasar           ###   ########.fr       */
+/*   Updated: 2024/05/18 14:10:34 by ctasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,16 +61,16 @@ void	check_tilde(char *input, char *home)
 			strerror(errno);
 		}
 	}
-	free_array(temp);
+	ft_free_arr(temp);
 }
 
 void	set_pwd(t_data *ms)
 {
-	change_pwd(ms->env, get_env("PWD"), "OLDPWD=");
+	change_pwd(ms->env, ft_getenv(ms, "PWD"), "OLDPWD=");
 	change_pwd(ms->env, getcwd(NULL, 0), "PWD=");
 }
 
-void	builtin_cd(t_data *ms, char **input)
+void	ft_cd(t_data *ms, char **input)
 {
 	char	*home;
 
@@ -95,6 +95,6 @@ void	builtin_cd(t_data *ms, char **input)
 		}
 	}
 	set_pwd(ms);
-	if (is_child())
+	if (ft_ischild(ms))
 		exit (errno);
 }

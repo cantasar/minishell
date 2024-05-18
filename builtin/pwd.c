@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctasar <ctasar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ctasar <ctasar@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 00:06:49 by ctasar            #+#    #+#             */
-/*   Updated: 2024/05/18 00:06:50 by ctasar           ###   ########.fr       */
+/*   Updated: 2024/05/18 13:50:05 by ctasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	builtin_pwd(void)
+void	ft_pwd(t_data *ms)
 {
 	char	*result;
 
@@ -22,6 +22,6 @@ void	builtin_pwd(void)
 	else
 		printf("%s\n", result);
 	free(result);
-	if (is_child())
+	if (ft_ischild(ms))
 		exit(errno);
 }

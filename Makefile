@@ -24,6 +24,13 @@ SRCS =	main.c\
 		execute/execute_utils.c\
 		execute/heredoc.c\
 		builtin/builtin.c\
+		builtin/echo.c\
+		builtin/cd.c\
+		builtin/env.c\
+		builtin/exit.c\
+		builtin/export.c\
+		builtin/unset.c\
+		builtin/pwd.c\
 		error/error.c\
 		free/free.c\
 
