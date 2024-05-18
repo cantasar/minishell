@@ -28,29 +28,22 @@ char	**ft_set_env(char **env)
 
 void	ft_set_path(t_data *ms)
 {
-	int		i;
-	char	*tmp;
+	char	*path;
 
-	//PATH leri : dan bölüp char ** diziye kopyalıyor
-	ms->path = ft_split(getenv("PATH"), ':');
-	i = 0;
-	//Eğer PATH in sonu / ile bitmiyorsa / ekliyor
-	while (ms->path[i])
-	{
-		if (ft_strncmp(&ms->path[i][ft_strlen(ms->path[i]) - 1],
-			"/", 1) != 0)
-		{
-			tmp = ft_strjoin(ms->path[i], "/");
-			free(ms->path[i]);
-			ms->path[i] = tmp;
-		}
-		i++;
-	}
+	if (ms->path)
+		free_arr(ms->path);
+	path = ft_getenv(ms, "PATH");
+	if (!(*path))
+		ms->path = NULL;
+	else
+		ms->path = ft_split(path, ':');
+	free(path);
 }
 
 void	ft_init_ms(t_data *ms, char **env)
 {
 	ms->env = ft_set_env(env);
+	ms->path = NULL;
 	ft_set_path(ms);
 	ms->pwd = ft_strdup(getenv("PWD"));
 	ms->oldpwd = ft_strdup(getenv("OLDPWD"));
@@ -58,6 +51,7 @@ void	ft_init_ms(t_data *ms, char **env)
 	ms->process = NULL;
 	ms->process_count = 0;
 	ms->exit_signal = FALSE;
+	ms->child_pid = ft_child_pid();
 
 	// //print env
 	// printf(("\n"));

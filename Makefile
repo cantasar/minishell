@@ -7,8 +7,10 @@ SRCS =	main.c\
 		utils/ft_in_squote.c\
 		utils/ft_isvalid.c\
 		utils/ft_is_hd.c\
+		utils/ft_ischild.c\
+		utils/ft_child_pid.c\
 		utils/ft_getenv.c\
-		utils/get_path.c\
+		utils/ft_getpath.c\
 		utils/ft_strcmp.c\
 		lexer/lexer.c\
 		lexer/lexer_utils.c\
@@ -19,6 +21,7 @@ SRCS =	main.c\
 		parser/process.c\
 		parser/quotes.c\
 		execute/execute.c\
+		execute/execute_utils.c\
 		execute/heredoc.c\
 		builtin/builtin.c\
 		error/error.c\

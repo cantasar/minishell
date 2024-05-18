@@ -67,9 +67,11 @@ typedef struct s_data
 	char		*line;
 	char		**env;
 	char		**path;
+	char		**export;
 	char		*pwd;
 	char		*oldpwd;
 	int			process_count;
+	int			child_pid;
 	int			exit_signal;
 	t_lexer		*lexer_list;
 	t_process	*process;
@@ -78,16 +80,19 @@ typedef struct s_data
 //utils
 void		ft_init_ms(t_data *ms, char **env);
 char		*ft_getenv(t_data *ms, char *str);
+void		ft_set_path(t_data *ms);
 int 		ft_check_quotes(char *line);
 int			ft_iswhitespace(char c);
 int			ft_isoperator(char *str);
 int			ft_istoken(int c);
 int			ft_isvalid(char c);
 int			ft_is_hd(t_process *process);
+int			ft_ischild(t_data *ms);
 char		**ft_add_arr(char **arr, char *new);
 int			ft_in_squote(char *str);
 int			ft_strcmp(const char *s1, const char *s2);
-char		*get_path(char *cmd);
+char		*ft_getpath(t_data *ms, char *cmd);
+int			ft_child_pid(void);
 
 //Lexer
 int	ft_lexer(t_data *ms);
@@ -116,6 +121,9 @@ char	*ft_parse_dollar(t_data *ms, char *str);
 
 int		ft_execute(t_data *ms);
 
+void	ft_change_in(t_data *ms, t_process *process);
+void	ft_change_out(t_data *ms, t_process *process);
+
 	//heredoc
 	void	ft_heredoc(t_data *ms);
 
@@ -125,10 +133,10 @@ int		ft_execute(t_data *ms);
 int		ft_isbuiltin(char *command);
 void	run_builtin(char **execute);
 
-
-
 //error
 void	ft_token_err(int type);
+void	ft_nofile_err(t_data *ms, char *str);
+void	ft_not_found_err(t_data *ms, char *str);
 
 //free
 void	ft_free_lexer(t_data *ms);

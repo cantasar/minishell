@@ -1,14 +1,14 @@
 #include "../minishell.h"
 
-// void	command_err(char *str)
-// {
-// 	errno = 127;
-// 	write(2, "minishell: ", 11);
-// 	write(2, str, ft_strlen(str));
-// 	write(2, ": command not found\n", 20);
-// 	if (is_child())
-// 		exit(errno);
-// }
+void	ft_not_found_err(t_data *ms, char *str)
+{
+	errno = 127;
+	write(2, "minishell: ", 11);
+	write(2, str, ft_strlen(str));
+	write(2, ": command not found\n", 20);
+	if (ft_ischild(ms))
+		exit(errno);
+}
 
 void	ft_token_err(int type)
 {
@@ -32,28 +32,18 @@ void	ft_token_err(int type)
 	write(2, "'\n", 2);
 }
 
-// void	directory_err(char *str)
-// {
-// 	errno = 126;
-// 	write(2, "minishell: ", 11);
-// 	write(2, str, ft_strlen(str));
-// 	write(2, ": is a directory\n", 17);
-// 	if (is_child())
-// 		exit(errno);
-// }
-
-// void	no_file_err(char *str)
-// {
-// 	if (ft_strchr(str, '/'))
-// 		errno = 127;
-// 	else
-// 		errno = 1;
-// 	write(2, "minishell: ", 11);
-// 	write(2, str, ft_strlen(str));
-// 	write(2, ": No such file or directory\n", 28);
-// 	if (is_child())
-// 		exit(errno);
-// }
+void	ft_nofile_err(t_data *ms, char *str)
+{
+	if (ft_strchr(str, '/'))
+		errno = 127;
+	else
+		errno = 1;
+	write(2, "minishell: ", 11);
+	write(2, str, ft_strlen(str));
+	write(2, ": No such file or directory\n", 28);
+	if (ft_ischild(ms))
+		exit(errno);
+}
 
 // void	export_err(char *str)
 // {

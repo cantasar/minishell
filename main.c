@@ -1,9 +1,15 @@
 #include "minishell.h"
 
-t_data g_ms;
+void	ft_free_all(t_data *ms)
+{
+	ms->lexer_list = NULL;
+	ms->process = NULL;
+	ms->line = NULL;
+}
 
 void	ft_loop(t_data *ms, char **env)
 {
+	ft_init_ms(ms, env);
 	while (TRUE)
 	{
 		char	*line;
@@ -12,7 +18,6 @@ void	ft_loop(t_data *ms, char **env)
 		line = ft_strtrim(line, " ", "\t");
 		ms->line = ft_strdup(line);
 		free(line);
-		ft_init_ms(ms, env);
 		add_history(ms->line);
 		if (ft_lexer(ms) && ft_parser(ms))
 		{
@@ -20,9 +25,8 @@ void	ft_loop(t_data *ms, char **env)
 			ft_execute(ms);
 		}
 		else
-		{
 			printf(" -exec edilmedi \n   -free \n -loop \n\n\n");
-		}
+		ft_free_all(ms);
 		ft_free_lexer(ms);
 		ft_free_process(ms);
 	}
@@ -37,8 +41,6 @@ int main(int argc, char *argv[], char **env)
 		printf("Not accept arguments\n");
 		exit(EXIT_SUCCESS);
 	}
-
-	// ft_init_ms(&ms, env);
 	ft_loop(&ms, env);
 
 	return (0);

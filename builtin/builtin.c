@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ctasar <ctasar@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/18 00:06:52 by ctasar            #+#    #+#             */
+/*   Updated: 2024/05/18 01:05:35 by ctasar           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 int	ft_isbuiltin(char *command)
@@ -19,20 +31,19 @@ int	ft_isbuiltin(char *command)
 	return (FALSE);
 }
 
-	void	builtin_pwd(void)
-	{
-		char	*result;
+void	builtin_pwd(void)
+{
+	char	*result;
 
-		result = getcwd((void *)0, 0);
-		if (!result)
-			perror("minishell ");
-		else
-			printf("%s\n", result);
-		free(result);
-		// if (is_child())
-		// 	exit(errno);
-	}
-
+	result = getcwd((void *)0, 0);
+	if (!result)
+		perror("minishell ");
+	else
+		printf("%s\n", result);
+	free(result);
+	// if (is_child())
+	// 	exit(errno);
+}
 
 void	run_builtin(char **execute)
 {
