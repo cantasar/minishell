@@ -1,9 +1,9 @@
 <h1 align="center">
      MINISHELL
 </h1>
-#
-**`/cantasar`** *©*
-#
+
+**`/cantasar`**
+
 <br>
 <br>
 
@@ -311,11 +311,6 @@ command_not_found 2> error.log
 
 ![a](https://github.com/Yakupacs/Ecole42_Minishell/assets/73075252/29ba1dd6-d2c0-4631-a7c6-53efa91dd787)
 
-| Dönüş Değeri  | Tanım |
-| ------------- | ------------- |
-| Negatif değer  | Child process oluşturma başarısız.  |
-| Sıfır (0)  | Yeni bir child process oluşturuldu.  |
-| Pozitif değer  | Yeni oluşturulan child process'in ID'sini içerir.  |
 
 ```
 #include <stdio.h>
