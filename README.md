@@ -1,55 +1,61 @@
 <h1 align="center">
      MINISHELL
 </h1>
+#
+**`/cantasar`** *©*
+#
+<br>
+<br>
 
-### İçindekiler
+### Contents
 
-1. **[Shell Program Yapıları](#1-shell-program-yapıları)**
+1. **[Shell Program Structures](#1-shell-program-structures)**
      1. **[Lexer](#11-lexer)**
      2. **[Parser](#12-parser)**
      3. **[Executor](#13-executor)**
      4. **[PIPE '|'](#14-pipe)**
-     5. **[AND Operatörü (&&)](#15-and-operatörü)**
-     6. **[OR Operatörü (||)](#16-or-operatörü)**
-     7. **[Çıkış Durumu ($?)](#17-çıkış-durumu)**
+     5. **[AND Operator (&&)](#15-and-operator)**
+     6. **[OR Operator (||)](#16-or-operator)**
+     7. **[Exit Status ($?)](#17-exit-status)**
      8. **[PID](#18-pid)**
      9. **[Environments (ENV)](#19-env)**
      10. **[Export](#110-export)**
      11. **[Declare](#111-declare)**
      12. **[Echo](#112-echo)**
      13. **[File Descriptors](#113-file-descriptors)**
-2. **[Shell Program Fonksiyonları](#2-shell-program-fonksiyonları)**
+2. **[Shell Program Functions](#2-shell-program-functions)**
      1. **[Fork()](#21-fork)**
      2. **[Pipe()](#22-pipe)**
      3. **[Dup()](#23-dup)**
      4. **[Dup2()](#24-dup2)**
-4. **[Çalışma Yapısı](#3-çalışma-yapısı)**
-     1. **[Akış Şeması](#31-akış-şeması)**
-     2. **[Fonksiyonlar](#32-fonksiyonlar)**
-5. **[Redirections - Yönlendirmeler](#4-redirections)**
-     1. **[Standart Input '<'](#41-standart-input)**
-     2. **[Standart Output '>'](#42-standart-output)**
+4. **[Working Structure](#3-working-structure)**
+     1. **[Flowchart](#31-flowchart)**
+     2. **[Functions](#32-functions)**
+5. **[Redirections](#4-redirections)**
+     1. **[Standard Input '<'](#41-standard-input)**
+     2. **[Standard Output '>'](#42-standard-output)**
      3. **[Appending Redirected Output ">>"](#43-appending-redirected-output)**
      4. **[Here Documents '<<'](#44-here-documents)**
 <br>
 
-## 1. Shell Program Yapıları
+## 1. Shell Program Structures
 
 <br>
 
 ### 1.1 Lexer
-- Lexer, metin girdisini tararken belirli dilbilgisi kurallarına dayalı olarak metni analiz eder.
-- Bash shell için lexer, girilen metni parçalara ayırır ve her parçayı birer **"token"** olarak tanımlar.
-- Tokenler, komutlar, argümanlar, değişkenler, operatörler vb. gibi dilbilgisi yapılarını temsil eder.
-- Lexer, metindeki karakterleri okur, bu karakterlerin anlamsal gruplara ayrılmasını sağlar ve daha sonra bu tokenlerin bir listesini oluşturur.
+- Lexer scans the input text and analyzes it based on specific grammatical rules.
+- For Bash shell, the lexer splits the input text into parts and defines each part as a **"token"**.
+- Tokens represent grammatical structures such as commands, arguments, variables, operators, etc.
+- The lexer reads the characters in the text, groups them into meaningful chunks, and then creates a list of these tokens.
+
 ```
 3 + 4 * 2
 ```
-- Lexer, yukarıdaki örnekte her bir karakteri sırayla analiz eder ve sırasıyla "3", "+", "4", "*" ve "2" karakterlerini analiz edecektir.
-- Lexer, karakter analizi sırasında dilbilgisel yapıları (tokenleri) tanır ve oluşturur.
-- Tamsayı: "3", "4", "2"
-- Operatör: "+", "*"
-- Lexer tanımlanan tokenleri çıktı olarak sunar.
+- In the example above, the lexer will analyze each character in sequence and identify "3", "+", "4", "*", and "2" as tokens.
+- The lexer recognizes and creates tokens during character analysis.
+- Integer: "3", "4", "2"
+- Operator: "+", "*"
+- The lexer outputs the identified tokens.
 
 *INTEGER: "3"*
 
@@ -57,51 +63,54 @@
 
 *INTEGER: "4"*
 
-OPERATOR: "*"
- 
+*OPERATOR: "*"
+
 *INTEGER: "2"*
 
 <br>
 
 ### 1.2 Parser
-- Parser, lexer tarafından oluşturulan token listesini alır ve bu tokenlerin belirli bir dilbilgisi yapısını takip ettiğini kontrol eder.
-- Parser, dilbilgisi kurallarını kullanarak tokenleri işler, onları sözdizimsel olarak doğru bir şekilde sıralar ve dilin gramerine uygun bir ağaç yapısı oluşturur.
-- Bash shell için parser, komutların doğru bir şekilde düzenlenmesini, argümanların ve seçeneklerin doğru yerleştirilmesini ve işaretçilerin (örneğin; ifadelerin bitişini veya döngülerin başlangıcını belirten belirteçler) doğru kullanılmasını kontrol eder.
+- The parser takes the token list created by the lexer and checks if these tokens follow a specific grammatical structure.
+- Using grammatical rules, the parser processes the tokens, arranges them syntactically, and creates a tree structure that conforms to the language's grammar.
+- For the Bash shell, the parser ensures that commands are arranged correctly, arguments and options are placed properly, and markers (e.g., tokens indicating the end of statements or the start of loops) are used correctly.
 
 <br>
 
 ### 1.3 Executor
-- Executor, parser tarafından oluşturulan dilbilgisi ağacını alır ve bu ağaçtaki her komut için bir işlem oluşturur.
-- Bash shell için executor, komutları işletmek ve sonuçlarını elde etmekle sorumludur.
-- Executor, komutları işletirken, değişkenleri değerlendirir, dosya işlemlerini gerçekleştirir, diğer programları çalıştırır ve gerektiğinde çıktıyı bir sonraki komuta yönlendirmek için boruları (pipe) oluşturur.
-- Executor ayrıca koşullu ifadeleri değerlendirir, döngülerin döngü koşullarını kontrol eder ve program akışını yönetir.
+- The executor takes the grammar tree created by the parser and generates operations for each command in the tree.
+- For the Bash shell, the executor is responsible for executing commands and obtaining their results.
+- The executor evaluates variables, performs file operations, runs other programs, and creates pipes to direct output from one command to the next as needed.
+- The executor also evaluates conditional statements, checks loop conditions, and manages program flow.
 
 <br>
 
 ### 1.4 Pipe
-- Bir işlemin çıktısını doğrudan başka bir işlemin girişine yönlendirmek için kullanılır.
-- Birden çok işlemi bir araya getirerek verimli bir şekilde çalışmalarını sağlar.
-- Pipe, dikey çubuk '|' sembolü ile temsil edilir.
+- Used to direct the output of one process directly into the input of another process.
+- Enables efficient chaining of multiple processes.
+- Represented by the vertical bar '|' symbol.
+
 ```
 ls | grep ".txt"
 ```
-- Bu komut "ls" komutunun çıktısındaki ".txt" uzantısına sahip olan dosyaları filtrelemek için "grep" komutunu kullanılır.
-- "ls" komutu dosya listesini üretir ve bu çıktı "grep" komutuna geçirilir. Sonuç olarak, yalnızca ".txt" uzantısına sahip dosyalar ekrana yazdırılır.
+- This command uses "grep" to filter files with the ".txt" extension from the output of the "ls" command.
+- The "ls" command produces a list of files, and this output is passed to the "grep" command, resulting in only ".txt" files being printed to the screen.
 
 <br>
 
-### 1.5 AND Operatörü
-- Komut satırında **'&&'** operatörü soldaki ifadeden sırasıyla çalışmaya başlar.
-- Soldaki ifade başarılıysa sağındakileri çalıştırır.
+### 1.5 AND Operator
+- The **'&&'** operator on the command line starts executing from the left-hand side expression sequentially.
+- If the left-hand side expression is successful, it executes the right-hand side expressions.
+
 ```
 git add . && git commit -m "commit" && git push
 ```
-- Yukarıdaki örnekte "git commit -m" satırı çalışmazsa onun sağındaki komutlar da çalışmayacaktır.
+- In the example above, if the "git commit -m" line fails, the commands to its right will not execute.
 
 <br>
 
-### 1.6 OR Operatörü
-- Komut satırında **'||'** operatörü yalnızca soldaki ifade başarısız ise sağındakini çalıştırır.
+### 1.6 OR Operator
+- The **'||'** operator on the command line executes the right-hand side expression only if the left-hand side expression fails.
+
 ```
 make || make fclean
 ```
@@ -112,109 +121,114 @@ gcc deneme.c || echo "Failed."
 
 <br>
 
-### 1.7 Çıkış Durumu
-- Her bir komut çalıştırıldığında, çıkış durumu bir tam sayı değeriyle temsil edilir.
-- Başarı durumunda genellikle 0 değeri döndürülür, hata durumunda ise farklı bir değer döndürülür.
-- "$?" değişkeni, en son çalıştırılan komutun çıkış durumunu içerir.
+### 1.7 Exit Status
+- When each command is executed, the exit status is represented by an integer value.
+- A value of 0 usually indicates success, while different values indicate errors.
+- The "$?" variable contains the exit status of the last executed command.
+
 ```
 echo a
 $?
 ```
-- Başarılı olduğu için '0' döner.
+- Returns '0' for success.
 ```
 cat abc.txt
 $?
 ```
-- Böyle bir dosya olmadığı için '1' hata durumu döner.
+- Returns '1' for error because the file does not exist.
 ```
 /bin/ech0
 $?
 ```
-- Böyle bir komut bulamadığı için '127' döner.
+- Returns '127' for error because the command was not found.
 
 <br>
 
-### 1.8 Pid
-- PID, çalışan bir işlemin **benzersiz kimliğini** temsil eder.
-- Her işlem, işletim sistemi tarafından PID ile tanımlanan benzersiz bir numaraya sahiptir.
-- PID, bir işlemin kimliğini takip etmek, işlemler arasında iletişim kurmak veya işlemi kontrol etmek için kullanılabilir.
+### 1.8 PID
+- PID represents the **unique identifier** of a running process.
+- Every process has a unique number assigned by the operating system, identified by its PID.
+- PID can be used to track the identity of a process, communicate between processes, or control a process.
+
 ```
 pid_t pid = getpid();
 ```
-- Bir işlemi sonlandırmak veya durdurmak istediğinizde PID'ye ihtiyaç duyarsınız. Ayrıca belirli bir işlemi izlemek veya diğer işlemlerle etkileşime geçmek için PID kullanabilirsiniz.
-- Bir işlem başlamadıysa "pid" numarasının değeri "-1" olarak ayarlanır.
+- You need the PID to terminate or stop a process. You can also use the PID to monitor or interact with a specific process.
+- If a process has not started, the value of "pid" is set to "-1".
 
 <br>
 
 ### 1.9 ENV
-- Environment variables (Çevresel Değişkenler) sistemdeki programlar ve işlemler tarafından kullanılan değerlerdir.
-- Bu değişkenler, çalışan programlara ve komutlara bazı bilgiler sağlamak için kullanılır.
-- Bash, bu değişkenlere erişim sağlamak için çeşitli yöntemler sunar.
-- Environment variables, **anahtar-değer (key-value)** çiftleridir.
-- Anahtarlar değişkenlere erişmek için kullanılan isimlerdir ve değerler ise bu değişkenlerin taşıdığı bilgidir.
-- Örneğin, bir "PATH" değişkeni, sistemdeki programların bulunduğu dizinlerin bir listesini içerebilir.
-- Bir değişken tanımlamak için:
+- Environment variables are values used by programs and processes on the system.
+- These variables provide information to running programs and commands.
+- Bash offers various methods to access these variables.
+- Environment variables are **key-value** pairs.
+- Keys are names used to access the variables, and values are the information the variables hold.
+- For example, a "PATH" variable might contain a list of directories where system programs are located.
+- To define a variable:
+
 ```
 export MY_VARIABLE="Hello, World"
 ```
-değişkenin adını belirtip buna bir değer atamanız gerekir. Bash'te bu işlem için genellikle 'export' komutu kullanılır.
-- Bir değişkene erişmek için:
+you need to specify the variable's name and assign it a value. The 'export' command is typically used in Bash to do this.
+- To access a variable:
+
 ```
 echo $MY_VARIABLE
 ```
-**'$'** işaretini kullanarak değişken adını çağırabiliriz.
-- Bir değişkeni silmek için:
+you can call the variable name using the **'$'** sign.
+- To delete a variable:
 ```
 unset MY_VARIABLE
 ```
-- Bazı environment variables, sistem tarafından otomatik olarak tanımlanır ve kullanılabilir. Örneğin:
-     - **'PATH'**: Sistemdeki programların bulunduğu dizinlerin listesi
-     - **'HOME'**: Kullanıcının ana dizini
-     - **'USER'**: Kullanıcının adı
-- Bash, çeşitli öntanımlı environment variables sağlar. Örneğin:
-     - **'PWD'**: Geçerli çalışma dizini
-     - **'SHELL'**: Kullanılan kabul (shell) programının adı
-     - **'LANG'**: Dil ayarı
+- Some environment variables are automatically defined by the system and can be used directly. For example:
+     - **'PATH'**: List of directories where system programs are located
+     - **'HOME'**: User's home directory
+     - **'USER'**: User's name
+- Bash provides several predefined environment variables. For example:
+     - **'PWD'**: Current working directory
+     - **'SHELL'**: Name of the shell program in use
+     - **'LANG'**: Language setting
 
 <br>
 
 ### 1.10 Export
+
 ```
 export
 ```
-- **"export"** komutu, bir değişkeni kabuk ortamına (environment) aktarmak için kullanılır.
-- Bir değişkeni **"export"** ettiğinizde, bu değişken ve değeri, alt kabuk süreçlerine aktarılır ve bu süreçlerde erişilebilir hale gelir.
-- "export" komutu, genellikle çevre değişkenlerini (örneğin, PATH, HOME) veya kullanıcı tanımlı değişkenleri alt kabuk süreçlerinde kullanılabilir hale getirmek için kullanılır.
-- Aktarılan değişkenler, alt kabuk süreçlerinde değiştirilebilir ve bu değişiklikler ebeveyn kabuk sürecini etkilemez. Yani, alt kabuk süreçlerinde yapılan değişiklikler yalnızca o süreçleri etkiler.
+- The **"export"** command is used to transfer a variable to the shell environment.
+- When you **"export"** a variable, this variable and its value are passed to sub-shell processes and become accessible in those processes.
+- The "export" command is generally used to make environment variables (e.g., PATH, HOME) or user-defined variables available in sub-shell processes.
+- Variables transferred can be modified in sub-shell processes without affecting the parent shell process. Changes made in sub-shell processes only affect those processes.
 ```
 my_var="Hello"
 export my_var
 ```
-- Yukarıdaki örnekte, "my_var" adında bir değişken oluşturulur ve daha sonra "export" komutuyla kabuk ortamına aktarılır. Bu "my_var" değişkeninin alt kabuk süreçlerinde de erişilebilir hale gelmesini sağlar.
+- In the example above, a variable named "my_var" is created and then transferred to the shell environment using the "export" command. This makes the "my_var" variable accessible in sub-shell processes as well.
 
 <br>
 
 ### 1.11 Declare
-- **"declare"** komutu, değişkenlerin tanımlanması, türü belirlenmesi ve özelliklerinin atanması için kullanılır.
+- The **"declare"** command is used to define variables, specify their types, and assign attributes.
 ```
 declare [options] variable=value
 ```
-- Değişkenlerin türünü belirleyebilirsiniz. Örneğin, **"-i"** seçeneğiyle bir değişkeni tamsayı (integer) olarak tanımlayabilirsiniz.
-- Değişkenlere özel nitelikler (readonly, local vb.) atayabilirsiniz.
-- **"declare"** komutu, sadece tanımlandığı kabuk oturumu veya kabuk betiği içinde geçerli olan değişkenler oluşturmanıza olanak sağlar.
-- Yani, alt kabuk süreçlerinde geçerli olmazlar.
+- You can specify the type of variables. For example, using the **"-i"** option, you can define a variable as an integer.
+- You can assign special attributes (readonly, local, etc.) to variables.
+- The **"declare"** command allows you to create variables that are only valid within the shell session or script in which they are defined.
+- These variables are not valid in sub-shell processes.
 ```
 declare -i num=10
 ```
-- 'num' değişkeni tamsayı olarak tanımlanır.
+- The 'num' variable is defined as an integer.
 ```
 declare -r readonly_var="Hello"
 ```
-- 'readonly_var' değişkeni salt okunur olarak tanımlanır.
+- The 'readonly_var' variable is defined as read-only.
 ```
 declare -x exported_var="World"
 ```
-- 'exported_var' değişkeni kabuk ortamına aktarılır.
+- The 'exported_var' variable is defined as exported.
 ```
 declare -a my_array=(1 2 3)
 ```
@@ -227,68 +241,73 @@ declare -f my_function
 <br>
 
 ### 1.12 Echo
-- **'echo'**, bir metni ya da değişkenin değerini ekrana yazdırmak için kullanılan bir komuttur.
-- **'-n'** seçeneği ise çıktının sonuna bir satır atlama karakteri (\n) eklememeyi sağlar.
+- The **"echo"** command is used to print messages, variable values, or command results to the screen.
 ```
 name="Yakup"
-echo "My name. is $name"
+echo "My name is $name"
 ```
-- Yukarıdaki örnekte, "name" adında bir değişken tanımlanır ve "echo" komutuyla değişkenin değeri ekrana yazdırılır. Çıktı olarak "My name is Yakup" ifadesini görürüz.
+- In the example above, a variable named "name" is defined, and the "echo" command prints the value of the variable to the screen. The output will be "My name is Yakup".
 ```
 echo -n "Hello, " && echo "World"
 ```
-- Yukarıdaki örnekte, **"-n"** seçeneği kullanılarak ilk "echo" komutunda satır atlama karakteri devre dışı bırakılır. İkinci "echo" komutu ise satır atlama karakteriyle birlikte çalışır ve çıktı olarak "Hello, World!" ifadesini görürürüz.
-- **'&&'** operatörü Bash kabuğunda kullanılan bir mantıksal operatördür ve ardışık komutları birleştirmek için kullanılır.
+- In the example above, the **"-n"** option is used to disable the newline character in the first "echo" command. The second "echo" command runs with the newline character, resulting in the output "Hello, World!".
+- The **'&&'** operator is a logical operator used in the Bash shell to combine sequential commands.
 
 <br>
 
 ### 1.13 File Descriptors
-- Bash kabuğunda kullanılan dosya tanımlayıcıları (file descriptors) bir sürecin giriş, çıkış ve hata akışlarını yönlendirmek için kullanılan sayısal değerlerdir.
-- İlk 3 file descriptor OS'a ayrılmıştır, gerisini kullanıcı doldurur.
+- File descriptors used in the Bash shell are numerical values used to direct the input, output, and error streams of a process.
+- The first 3 file descriptors are reserved for the OS, and the rest are filled by the user.
 
-#### 0: Standart Giriş (stdin):
-- Standart giriş, bir sürece veri sağlayan mekanizmadır. Genellikle klavye veya başka bir süreç tarafından sağlanan girişe karşılık gelir.
-- Dosya tanımlayıcısı 0 olarak kabul edilir.
+#### 0: Standard Input (stdin):
+- Standard input is the mechanism that provides data to a process. It typically corresponds to input provided by the keyboard or another process.
+- It is represented by file descriptor 0.
 
-#### 1: Standart Çıkış (stdout):
-- Standart çıkış, bir sürecin çıktısını yönlendirdiği yerdir. Varsayılan olarak, standart çıktı, verilerin kabuk penceresine veua bir dosyaya yazdırılmasını sağlar.
-- Dosya tanımlayıcısı 1 olarak temsil edilir.
+#### 1: Standard Output (stdout):
+- Standard output is where a process directs its output. By default, standard output allows data to be printed to the shell window or a file.
+- It is represented by file descriptor 1.
 
-#### 2: Standart Hata (stderr):
-- Standart hata, bir sürecin hata ve hata mesajlarını yönlendirdiği yerdir.
-- Genellikle standart çıktıdan ayrı tutulur ve hata ayıklama ve hata yönetimi için kullanılır.
-- Dosya tanımlayıcısı 2 olarak temsil edilir.
+#### 2: Standard Error (stderr):
+- Standard error is where a process directs its errors and error messages.
+- It is usually kept separate from standard output and is used for debugging and error management.
+- It is represented by file descriptor 2.
 
-#### 1. Standart Girişten Okuma:
+#### 1. Reading from Standard Input:
 ```
 read line
 ```
-- Yukarıdaki komut, kullanıcıdan bir giriş satırı okur. Kullanıcıdan girilen veri, standart giriş (stdin) üzerinden alınır.
+- The command above reads a line of input from the user. The input provided by the user is taken from standard input (stdin).
 
-#### 2. Standart Çıktıya Yazdırma:
+#### 2. Writing to Standard Output:
+
 ```
 echo "Hello, World" > file.txt
 ```
-- Yukarıdaki komut, "Hello, World" metnini "file.txt" dosyasına yazar. Standart çıktı (stdout) yönlendirilerek dosyaya veri yazılır.
+- The command above writes the text "Hello, World" to the file "file.txt". The standard output (stdout) is redirected to the file, writing the data.
 
-#### 3. Standart Hata Çıktısını Yönlendirme:
+#### 3. Redirecting Standard Error Output:
+
 ```
 command_not_found 2> error.log
 ```
-- Yukarıdaki komut, mevcut olmayan bir komutu çalıştırmaya çalışır ve oluşan hata mesajını "error.log" dosyasına yazar. Standart hata (stderr), dosyaya yönlendirilerek hatalar kaydedilir.
+- The command above attempts to run a non-existent command and writes the resulting error message to the file "error.log". The standard error (stderr) is redirected to the file, logging the errors.
 
 <br>
 
-## 2. Shell Program Fonksiyonları
+
+## 2. Shell Program Functions
 
 <br>
 
-### 2.1 Fork
-- Fork() sistem çağrısı, yeni bir process oluşturmak için kullanılır.
-- Bu işlem child process olarak adlandırılır ve fork() çağrısını yapan process(parent process) ile eş zamanlı olarak çalışır.
-- Yeni bir child process oluşturulduktan sonra, her iki işlem de fork() sistem çağrısını takip eden bir sonraki komutu yürütür.
-- Child process parent process ile aynı pc(program counter) aynı CPU registerlere ve aynı open files'lere sahiptir.
-- Fork() işlemi herhangi bir parametre almaz ve bir tamsayı değeri döndürür.
+### 2.1 Fork()
+- The **"fork()"** system call is used to create a new process.
+- A process created with "fork()" becomes a copy of the parent process.
+- The newly created process is called the child process, while the original process is the parent process.
+- "fork()" returns the PID of the newly created process.
+- If "fork()" is successful, the PID of the child process is returned to the parent process, and the value **"0"** is returned to the child process.
+- If "fork()" fails, the value **"-1"** is returned.
+- The parent and child processes start executing from the point where "fork()" was called.
+- "fork()" is used to run separate parts of a program in parallel.
 
 ![a](https://github.com/Yakupacs/Ecole42_Minishell/assets/73075252/29ba1dd6-d2c0-4631-a7c6-53efa91dd787)
 
@@ -323,13 +342,14 @@ output:
 
 <br>
 
-### 2.2 Pipe
-
-- Pipe, bir işlemin standart çıkışının diğer bir sürecin standart girdisi haline geldiği iki process arasındaki bağlantıdır.
-- Pipe, yalnızca tek yönlü iletişim sağlar. Yani bir process bir pipe'e yazarken diğer process pipe'den okur.
-- Pipe "sanal dosya" olarak işlem gören ana bellekteki bir alanı açar.
-- Bir process bu "sanal dosyaya" veya pipe'e yazabilirken, diğer ilişkili process ondan okuyabilir.
-- Eğer bir process pipe'e bir şey yazılmadan önce okumaya çalışırsa, process yazılan bir şey olana kadar askıya alınır.
+### 2.2 Pipe()
+- The **"pipe()"** system call is used to create a unidirectional communication channel.
+- Data written to a pipe is sent to one end, and the data is read from the other end.
+- Pipes are used to send data from one process to another.
+- "pipe()" creates two file descriptors: one for reading and one for writing.
+- If "pipe()" is successful, it returns **"0"**.
+- If "pipe()" fails, the value **"-1"** is returned.
+- Pipes are used to transfer the output of one process to the input of another process.
 
 ![pipe](https://github.com/Yakupacs/Ecole42_Minishell/assets/73075252/d2e1c274-ef21-4601-8daa-da16fc4767ec)
 
@@ -373,13 +393,15 @@ int main() {
 output:
      Ebeveyn: Merhaba Ebeveyn!
 ```
+- The filedes[0] descriptor is used for reading, and the filedes[1] descriptor is used for writing.
 
-### 2.3 Dup
+<br>
 
-- dup() sistem çağrısı, bir dosya tanımlaycısının bir kopyasını oluşturur.
-- Yeni tanımlayıcı için kullanılmayan en düşük numaralı tanımlayıcıyı kullanır.
-- Kopya başarılı oluşturulursa, orijinal ve kopya dosya tanımlayıcıları birbirinin yerine kullanılabilir.
-- Her ikisi de aynı açık dosya tanımına işaret eder ve bu nedenle dosya konumunu ve dosya durum bayraklarını paylaşırlar.
+### 2.3 Dup()
+- The **"dup()"** system call duplicates an existing file descriptor.
+- The duplicated file descriptor is a copy of the original file descriptor.
+- "dup()" creates a new file descriptor with the same properties as the original file descriptor.
+
 
 ```
 #include<stdio.h>
@@ -401,14 +423,14 @@ int main()
 
 }
 ```
-- Yukarıdaki kodda daha önceden oluşturulan dup.txt dosyası dup() fonksiyonu ile kopyalanarak iki dosya tanımlayıcısı tarafından kullanılır ve iki tanımlayıcı da dosyaya yazma işlemi yapabilir.
+- If "dup()" is successful, it returns the new file descriptor.
+- If "dup()" fails, the value **"-1"** is returned.
+- The new file descriptor can be used to access the same file or resource as the original file descriptor.
 
 <br>
 
-### 2.4 Dup2
-
-- int dup2(int oldfd, int newfd);
-- dup() fonksiyonu ile temel farkları, kullanıcının belirttiği tanımlayıcı numarasını kullanmak yerine kullanılmayan en düşük numaralı dosya tanımlayıcısını kullanmaktır.
+### 2.4 Dup2()
+- The **"dup2()"** system call duplicates an existing file descriptor and assigns it to a specified file descriptor.
 
 ```
 #include<stdlib.h>
@@ -425,54 +447,65 @@ int main()
     printf("I will be printed in the file tricky.txt\n");
 }
 ```
-- Yukarıdaki kodda STDOUT = 1 oluşturulan fd tanımlayıcısına aktarılır ve STDOUT'a aktarılan çıktılar fd içerisine yazılır.
+- If "dup2()" is successful, it returns the new file descriptor.
+- If "dup2()" fails, the value **"-1"** is returned.
+- "dup2()" assigns the new file descriptor to the same file or resource as the original file descriptor.
+- If the new file descriptor is already in use, it is closed and assigned to the new file descriptor.
 
 <br>
 
-## 3. Çalışma Yapısı
+## 3. Working Structure
 
 <br>
 
-### 3.1 Akış Şeması
-
-![image](https://github.com/Yakupacs/Ecole42_Minishell/assets/73075252/95882bea-cef8-4113-9354-8da56ccaaa55)
+### 3.1 Flowchart
+- The flowchart of a Shell program typically involves the following steps:
+     1. **Lexical Analysis**: The input is tokenized.
+     2. **Parsing**: Tokens are analyzed and converted into a syntax tree.
+     3. **Execution**: The commands are executed.
+     4. **Input/Output Redirection**: Handles redirection of standard input/output.
+     5. **Pipe Handling**: Manages the flow of data between commands through pipes.
+     6. **Environment Variables**: Manages the environment variables.
+     7. **Sub-shell Management**: Handles sub-shell processes.
+     8. **Error Handling**: Manages errors and exit statuses.
 
 <br>
 
-### 3.2 Fonksiyonlar
+### 3.2 Functions
+- The functions of a Shell program typically include:
 
-| Fonksiyon  | Kütüphane | İşlev |
+| Function  | Library | Description |
 | ------------- | ------------- | ------------- |
-| printf  | <stdio.h>  | Çıktıyı stdout'a yazdırır. |
-| malloc  | <stdlib.h>  | Dinamik bellek ayırır. |
-| free  | <stdlib.h>  | Dinamik belleği serbest bırakır. |
-| read  | <unistd.h>  | Veriyi okur. |
-| write  | <unistd.h>  | Veriyi yazar. |
-| open  | <fcntl.h>  | Dosyayı açar. |
-| close  | <unistd.h>  | Dosyayı kapatır. |
-| fork  | <unistd.h>  | Yeni bir child process oluşturur. |
-| wait  | <sys/wait.h>  | Bir child process işleminin tamamlanmasını bekler. |
-| waitpid  | <sys/wait.h>  | Belirli bir child process işleminin tamamlanmasını bekler. |
-| wait3  | <sys/wait.h>  | Bir child process işleminin tamamlanmasını bekler. |
-| wait4  | <sys/wait.h>  | Belirli bir child process işleminin tamamlanmasını bekler. |
-| signal  | <signal.h>  | Sinyal yakalayıcıyı ayarlar. |
-| kill  | <signal.h>  | İşlemi sonlandırıp sinyal gönderir. |
-| exit  | <stdlib.h>  | Programda çıkış yapar. |
-| getcwd  | <unistd.h>  | Geçerli çalışma dizinini alır. |
-| chdir  | <unistd.h>  | Çalışma dizinini değiştirir. |
-| stat  | <sys/stat.h>  | Dosya veya dizin hakkında bilgi alır. |
-| lstat  | <sys/stat.h>  | Sembolik bağlantının kendisi hakkında bilgi alır. |
-| fstat  | <sys/stat.h>  | Dosya tanımlayıcısına bağlı dosya hakkında bilgi alır. |
-| execve  | <unistd.h>  | Yeni bir program yürütür. |
-| dup  | <unistd.h>  | Dosya tanımlayıcısını kopyalar. |
-| dup2  | <unistd.h>  | Dosya tanımlayıcısını belirtilen dosya tanımlayıcısına kopyalar. |
-| pipe  | <unistd.h>  | İki yönlü bir iletişim kanalı (pipe) oluşturur. |
-| opendir  | <dirent.h>  | Dizin akışını açar. |
-| readdir  | <dirent.h>  | Bir sonraki dizin girdisini okur. |
-| closedir  | <dirent.h>  | Dizin akışını kapatır. |
-| strerror  | <string.h>  | Hata numarasına karşılık gelen bir hata açıklaması döndürür. |
-| errno  | <errno.h>  | Hata kodunu tutan bir değişken. |
-| termcap  | <term.h>  | Terminal özelliklerini elde eder. |
+| printf  | <stdio.h>  | Prints output to stdout. |
+| malloc  | <stdlib.h>  | Allocates dynamic memory. |
+| free  | <stdlib.h>  | Releases dynamic memory. |
+| read  | <unistd.h>  | Reads data. |
+| write  | <unistd.h>  | Writes data. |
+| open  | <fcntl.h>  | Opens a file. |
+| close  | <unistd.h>  | Closes a file. |
+| fork  | <unistd.h>  | Creates a new child process. |
+| wait  | <sys/wait.h>  | Waits for a child process to complete. |
+| waitpid  | <sys/wait.h>  | Waits for a specific child process to complete. |
+| wait3  | <sys/wait.h>  | Waits for a child process to complete. |
+| wait4  | <sys/wait.h>  | Waits for a specific child process to complete. |
+| signal  | <signal.h>  | Sets a signal handler. |
+| kill  | <signal.h>  | Terminates a process and sends a signal. |
+| exit  | <stdlib.h>  | Exits the program. |
+| getcwd  | <unistd.h>  | Gets the current working directory. |
+| chdir  | <unistd.h>  | Changes the working directory. |
+| stat  | <sys/stat.h>  | Retrieves information about a file or directory. |
+| lstat  | <sys/stat.h>  | Retrieves information about a symbolic link itself. |
+| fstat  | <sys/stat.h>  | Retrieves information about a file associated with a file descriptor. |
+| execve  | <unistd.h>  | Executes a new program. |
+| dup  | <unistd.h>  | Duplicates a file descriptor. |
+| dup2  | <unistd.h>  | Duplicates a file descriptor to a specified file descriptor. |
+| pipe  | <unistd.h>  | Creates a two-way communication channel (pipe). |
+| opendir  | <dirent.h>  | Opens a directory stream. |
+| readdir  | <dirent.h>  | Reads the next directory entry. |
+| closedir  | <dirent.h>  | Closes a directory stream. |
+| strerror  | <string.h>  | Returns a string describing the error code. |
+| errno  | <errno.h>  | Variable holding the error code. |
+| termcap  | <term.h>  | Retrieves terminal capabilities. |
 
 <br>
 
@@ -480,68 +513,39 @@ int main()
 
 <br>
 
-### 4.1 Standart Input
-
-- "<" sembolü, bir dosyadan giriş almak için kullanılan bir yönlendirme işlemidir. Bu işlem, bir komutun girişini, belirtilen bir dosyanın içeriğiyle değiştirir.
-- Bir komut çalıştırıldığında, genellikle kullanıcının klavyeden giriş yapması beklenir. Ancak '<' sembolü kullanılarak, komutun girişi belirli bir dosyadan alınabilir.
-- Bu, komutun klavyeden giriş almak yerine, belirli bir dosyayı giriş olarak kullanmasını sağlar.
+### 4.1 Standard Input '<'
+- The **"<"** operator redirects the standard input (stdin) of a command to a file.
 
 ```
-sort < dosya.txt
+command < input.txt
 ```
-- Örneğin aşağıdaki komutta 'sort' komutunu çalıştırırken girişi "girdi.txt" adlı dosyadan alır. Yani, girdi.txt dosyasının içeriği sort komutunun girişi olarak kullanılır.
-```
-cat < dosya.txt
-```
-- Yukarıdaki kodda dosya.txt adlı dosyanın içeriği okunur.
-```
-grep "kelime" < arama.txt
-```
-- Yukarıdaki kodda bir komutun girdisini standart girdiden değil de bir dosyadan alır ve "kelime" stringini arama.txt adı dosyada arar.
+- The command reads its input from "input.txt" instead of the keyboard.
 
 <br>
 
-### 4.2 Standart Output
-
-- '>' sembolü, bir komutun çıktısını belirtilen bir dosyaya yönlendirmek için kullanılan bir yönlendirme işlemidir.
-- Bu işlem, komutun çıktısını bir dosyaya yazarak, komutun normalde ekrana veya standart çıktıya yazdığı çıktıyı dosyaya kaydetmek için kullanılır.
+### 4.2 Standard Output '>'
+- The **">"** operator redirects the standard output (stdout) of a command to a file.
 
 ```
-ls > dosya.txt
+command > output.txt
 ```
-- Bu komut, ls komutunu çalıştırırken, çıktısını dosya.txt adlı bir dosyaya yönlendirir. 
-- Yani, ls komutunun normalde ekrana yazdığı dosya ve dizin listesi, bu sefer dosya.txt adlı dosyaya yazılır.
-```
-echo "Merhaba dünya" > dosya.txt
-```
-- Bu komut "Merhaba dünya" ifadesini dosya.txt adlı bir dosyaya yazar.
+- The command writes its output to "output.txt" instead of the screen.
 
 <br>
 
-### 4.3 Appending Redirected Output
-
-- ">>"
-- Shell komut dosyalarında ve terminal komutlarında çıktıyı bir dosyaya eklemek için kullanılan bir yönlendirme işlemidir.
-- Bu yöntem, bir komutum veya betiğin çıktısını bir dosyaya yazarken var olan bir dosyanın içeriğini korumak veya bir dosyaya ardışık çıktı eklemek için kullanılır.
+### 4.3 Appending Redirected Output ">>"
+- The **">>"** operator appends the standard output (stdout) of a command to a file.
 
 ```
-echo "Yeni satır" >> dosya.txt
+echo "hello" >> output.txt
 ```
-- Bu komut "Yeni satır" metnini "dosya.txt" adlı bir dosyaya ekleyecektir. Eğer dosya mevcut değilse oluşturulur.
-- Eğer dosya zaten varsa "Yeni satır" metni mevcut içeriğin sonuna eklenir.
-```
-date >> log.txt
-echo "Komut çalıştırıldı." >> log.txt
-```
-- Önce "date" komutunun çıktısı "log.txt" adlı bir dosyaya eklenir. Sonra da "Komut çalıştırıldı." metni aynı dosyanın sonuna eklenir. Bu şekilde ardışık komutların çıktıları dosyada biriktirilebilir.
+- The command appends its output to "output.txt" instead of overwriting it.
 
 <br>
 
-### 4.4 Here Documents
+### 4.4 Here Documents '<<'
+- The **"<<"** operator reads input from the current source until a line containing only a specified word is seen.
 
-- "<<"
-- Shell komut dosyalarında ve terminal komutlarında, bir komuta veya betiğe içeriden metin girişi sağlamak için kullanılan bir yönlendirme işlemidir.
-- Bu yöntem harici bir dosya kullanmadan çok satırlı metin girişi yapmanızı sağlar.
 ```
 cat << END
 This is line 1.
@@ -549,31 +553,6 @@ This is line 2.
 This is line 3.
 END
 ```
-```
-output:
-     This is line 1.
-     This is line 2.
-     This is line 3.
-```
-- Yukarıdaki komutta birden fazla satır END ifadesi gelene kadar input olarak alınır ve cat komutuna aktarılır.
+- The command reads input from the current source until the line containing only "EOF" is seen.
 
-```
-grep "keyword" << END
-This line contains the keyword.
-Another line without the keyword.
-END
-```
-```
-output:
-     This line contains the keyword.
-     Another line without the keyword.
-```
-- Yukarıdaki komutta END ifadesi gelene kadar girilen ifadeler input olarak grep "keyword" komutuna aktarılır.
-
-```
-cat << EOF > deneme.txt
-Key1=Value1
-Key2=Value2
-EOF
-```
-- Yukarıdaki komut ile EOF ifadesi gelene kadar girilen ifadeler deneme.txt içerisine input olarak aktarılır.
+<br>

@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*																			*/
-/*														:::	  ::::::::   */
-/*   tokenize.c										 :+:	  :+:	:+:   */
-/*													+:+ +:+		 +:+	 */
-/*   By: ctasar <ctasar@student.42istanbul.com.t	+#+  +:+	   +#+		*/
-/*												+#+#+#+#+#+   +#+		   */
-/*   Created: 2024/05/18 17:41:44 by ctasar			#+#	#+#			 */
-/*   Updated: 2024/05/18 18:18:20 by ctasar		   ###   ########.fr	   */
-/*																			*/
-/* ************************************************************************** */
-
 #include "../minishell.h"
 
 int	in_quotes(char *str, int i, char q)
@@ -27,44 +15,6 @@ int	in_quotes(char *str, int i, char q)
 	}
 	return (j);
 }
-
-// int	ft_handle_token(t_data *ms, t_lexer **list, int i)
-// {
-// 	t_tokens		token;
-
-// 	token = ft_istoken(ms->line[i]);
-// 	if (token == GREAT && ft_istoken(ms->line[i + 1]) == GREAT)
-// 	{
-// 		if (!ft_token(">>", GREAT_GREAT, list))
-// 			return (-1);
-// 		return (2);
-// 	}
-// 	else if (token == LESS && ft_istoken(ms->line[i + 1]) == LESS)
-// 	{
-// 		if (!ft_token("<<", LESS_LESS, list))
-// 			return (-1);
-// 		return (2);
-// 	}
-// 	else if (token == GREAT)
-// 	{
-// 		if (!ft_token(">", token, list))
-// 			return (-1);
-// 		return (1);
-// 	}
-// 	else if (token == LESS)
-// 	{
-// 		if (!ft_token("<", token, list))
-// 			return (-1);
-// 		return (1);
-// 	}
-// 	else if (token == PIPE)
-// 	{
-// 		if (!ft_token("|", token, list))
-// 			return (-1);
-// 		return (1);
-// 	}
-// 	return (0);
-// }
 
 int	ft_get_token(char c)
 {
